@@ -18,6 +18,15 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
+                        @if(Auth::user()->role_id == 1)
+                            CFP
+                        @else
+                            Branch
+                        @endif
+
+                    Role: {{Auth::user()->role->name}}
+
                 </div>
             </div>
         </div>

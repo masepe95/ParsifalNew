@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('c_f_p_audience_types', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->timestamps();
         });
     }
