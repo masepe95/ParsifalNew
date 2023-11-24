@@ -13,8 +13,14 @@ return new class extends Migration
     {
         Schema::create('tutors', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-        });
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->string('name');
+            $table->string('surname');
+            $table->text('description');
+            $table->string('email');
+            $table->string('phone');
+            $table->dateTime('available_from');
+            $table->dateTime('available_until');        });
     }
 
     /**

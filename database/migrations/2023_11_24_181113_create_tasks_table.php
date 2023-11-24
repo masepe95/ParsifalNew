@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('internships', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
-            $table->integer('camelot_company_id');
-            $table->string('email');
-            $table->string('phone');
-            $table->dateTime('parsifal_enrolled_at');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('internships');
+        Schema::dropIfExists('tasks');
     }
 };
