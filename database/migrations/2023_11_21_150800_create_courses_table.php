@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cfp_id')->onDelete('cascade');
+            $table->foreignId('cfp_id')->references('id')->on('c_f_p_s')->onDelete('cascade');
             $table->string('code');
             $table->string('topic');
             $table->text('description');
