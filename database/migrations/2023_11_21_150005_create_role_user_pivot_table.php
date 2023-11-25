@@ -13,8 +13,8 @@ return new class extends Migration
     {
         //
         Schema::create('role_user', function (Blueprint $table) {
-            $table->foreignId('role_id')->references('id')->on('roles')->onDelete('cascade');
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('role_id')->onDelete('cascade');
+            $table->foreignId('user_id')->onDelete('cascade');
         });
     }
 

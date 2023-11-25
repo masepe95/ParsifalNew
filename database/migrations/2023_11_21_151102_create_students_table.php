@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('phone');
             $table->dateTime('parsifal_enrolled_at');
             $table->dateTime('camelot_preregistration_email_sent_at');
-            $table->foreign('origin_id')->references('id')->on('origins');
+            $table->foreignId('origin_id')->references('id')->on('origins');
             $table->timestamps();
         });
     }

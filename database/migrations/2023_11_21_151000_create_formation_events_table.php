@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('formation_events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreignId('branch_id')->onDelete('cascade');
             $table->integer('course_id');
             $table->integer('tutor_id');
             $table->dateTime('start_date');
