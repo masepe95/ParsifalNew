@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->foreign('formation_event_id')->references('id')->on('formation_events')->onDelete('cascade');
+            $table->bigInteger('formation_event_id'); // foreignId('formation_event_id')->references('id')->on('formation_events'); => no, perchè anche se elimino la gerarchia dei CFP/BRANCHES/COURSES/FROMATION_EVENTS che mi lega il Candidato, poi me lo voglio conservare
             $table->integer('camelot_candidate_id');
             $table->string('email');
             $table->string('phone');
             $table->dateTime('parsifal_enrolled_at');
             $table->dateTime('camelot_preregistration_email_sent_at');
-            $table->foreign('origin_id')->references('id')->on('origins')->onDelete('cascade');
+            $table->foreign('origin_id')->references('id')->on('origins');
             $table->timestamps();
         });
     }

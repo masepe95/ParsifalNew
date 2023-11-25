@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('c_f_p_s', function (Blueprint $table) {
             $table->id();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('company_name');
             $table->string('vat_number',20);
             $table->string('address');
@@ -32,11 +32,11 @@ return new class extends Migration
             $table->string('logo');
             $table->boolean('internship_enabled');
             $table->boolean('stage_enabled');
-            $table->foreign('cfp_formation_type_id')->references('id')->on('c_f_p_s_cfp_formation_types')->onDelete('cascade');
-            $table->foreign('cfp_type_id')->references('id')->on('c_f_p_s_cfp_types')->onDelete('cascade');
-            $table->foreign('cfp_accreditation_type_id')->references('id')->on('c_f_p_s_cfp_accreditation_types')->onDelete('cascade');
-            $table->foreign('cfp_course_type_id')->references('id')->on('c_f_p_s_cfp_course_types')->onDelete('cascade');
-            $table->foreign('cfp_audience_type_id')->references('id')->on('c_f_p_s_cfp_audience_types')->onDelete('cascade');
+            $table->foreignId('cfp_formation_type_id')->references('id')->on('c_f_p_formation_types');
+            $table->foreignId('cfp_type_id')->references('id')->on('c_f_p_types');
+            $table->foreignId('cfp_accreditation_type_id')->references('id')->on('c_f_p_accreditation_types');
+            $table->foreignId('cfp_course_type_id')->references('id')->on('c_f_p_course_types');
+            $table->foreignId('cfp_audience_type_id')->references('id')->on('c_f_p_audience_types');
             $table->timestamps();
         });
     }

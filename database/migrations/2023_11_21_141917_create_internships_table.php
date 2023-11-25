@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('internships', function (Blueprint $table) {
             $table->id();
-            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->bigInteger('branch_id'); // foreignId('branch_id')->references('id')->on('branches'); => no, perchè anche se elimino la gerarchia dei CFP/BRANCHES/COURSE/FROMATION_EVENT che mi lega l'Azienda, poi me la voglio conservare
             $table->integer('camelot_company_id');
             $table->string('email');
             $table->string('phone');
