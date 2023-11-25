@@ -13,7 +13,7 @@ return new class extends Migration
     {
         //
         Schema::create('course_task', function (Blueprint $table) {
-            $table->foreignId('course_id')->references('id')->on('course')->onDelete('cascade');
+            $table->foreignId('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->foreignId('task_id')->references('id')->on('tasks')->onDelete('cascade');
         });
     }
