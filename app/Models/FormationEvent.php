@@ -24,4 +24,15 @@ class FormationEvent extends Model
         'max_students',
         'actual_price',
     ];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function task()
+    {
+        return $this->hasOne(Task::class);
+    }
+
 }

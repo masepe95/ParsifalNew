@@ -6,15 +6,14 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use \App\Models\Origin;
 
-class OriginSeeder extends Seeder
+class OriginsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        //
-        Origin::truncate();
+        //Origin::truncate();
         Origin::create([
             'id'=>1,
             'name' => 'Camelot Native',

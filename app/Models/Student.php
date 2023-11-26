@@ -24,4 +24,11 @@ class Student extends Model
         'camelot_preregistration_email_sent_at',
         'origin_id',
     ];
+
+    // To-Be Many-To-Many relationship
+    public function origin()
+    {
+        return $this->belongsTo(Origin::class);
+    }
+
 }

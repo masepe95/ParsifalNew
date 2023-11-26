@@ -27,4 +27,27 @@ class Course extends Model
         'available_from',
         'available_until',
     ];
+
+    public function cfp()
+    {
+        return $this->belongsTo(CFP::class);
+    }
+
+    public function courseType()
+    {
+        return $this->belongsTo(Task::class);
+    }
+
+    // Temporary One-To-One relationship
+    public function task()
+    {
+        return $this->hasOne(Task::class);
+    }
+
+    // To-Be Many-To-Many relationship
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class);
+    }
+
 }

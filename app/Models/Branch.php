@@ -31,4 +31,30 @@ class Branch extends Model
         'email',
         'phone',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function cfp()
+    {
+        return $this->belongsTo(CFP::class);
+    }
+
+    public function tutors()
+    {
+        return $this->hasMany(Tutor::class);
+    }
+
+    public function formationEvents()
+    {
+        return $this->hasMany(FormationEvent::class);
+    }
+
+    public function internships()
+    {
+        return $this->hasMany(Internship::class);
+    }
+
 }

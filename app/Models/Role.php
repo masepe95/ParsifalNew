@@ -18,4 +18,11 @@ class Role extends Model
         'id',
         'name',
     ];
+
+    // Many-To-Many relationship
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
 }

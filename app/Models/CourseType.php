@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Internship extends Model
+class CourseType extends Model
 {
     use HasFactory;
 
@@ -16,16 +16,13 @@ class Internship extends Model
      */
     protected $fillable = [
         'id',
-        'branch_id',
-        'camelot_company_id',
-        'email',
-        'phone',
-        'parsifal_enrolled_at',
+        'name',
     ];
 
-    public function branch()
+    public function courses()
     {
-        return $this->belongsTo(Branch::class);
+        return $this->hasMany(Course::class);
     }
+
 
 }

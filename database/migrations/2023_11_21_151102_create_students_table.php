@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->foreignId('formation_event_id')->references('id')->on('formation_events'); // => valutare se tenere così
-            //$table->bigInteger('formation_event_id'); // o così  perchè anche se elimino la gerarchia dei CFP/BRANCHES/COURSES/FROMATION_EVENTS che mi lega il Candidato, poi me lo voglio conservare
+            //$table->bigInteger('formation_event_id'); // o così perchè anche se elimino la gerarchia dei CFP/BRANCHES/COURSES/FROMATION_EVENTS che mi lega il Candidato, poi me lo voglio conservare
             $table->integer('camelot_candidate_id');
             $table->string('email');
             $table->string('phone');

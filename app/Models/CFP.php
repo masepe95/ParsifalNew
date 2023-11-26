@@ -36,4 +36,45 @@ class CFP extends Model
         'internship_enabled',
         'stage_enabled',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function branches()
+    {
+        return $this->hasMany(Branch::class);
+    }
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+
+    public function cfpType()
+    {
+        return $this->hasOne(CFPType::class);
+    }
+
+    public function cfpFormationType()
+    {
+        return $this->hasOne(CFPFormationType::class);
+    }
+
+    public function cfpAccreditationType()
+    {
+        return $this->hasOne(CFPAccreditationType::class);
+    }
+
+    public function cfpCourseType()
+    {
+        return $this->hasOne(CFPCourseType::class);
+    }
+
+    public function cfpAudienceType()
+    {
+        return $this->hasOne(CFPAudienceType::class);
+    }
+
 }
