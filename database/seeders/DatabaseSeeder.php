@@ -49,6 +49,7 @@ class DatabaseSeeder extends Seeder
         2-	NATIVO PARSIFAL
 
         */
+        $this->call('Database\Seeders\RolesSeeder');
         $this->call('Database\Seeders\UsersSeeder');
         $this->call('Database\Seeders\OriginsSeeder');
         $this->call('Database\Seeders\CourseTypesSeeder');
