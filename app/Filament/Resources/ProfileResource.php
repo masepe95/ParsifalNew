@@ -4,7 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProfileResource\Pages;
 use App\Filament\Resources\ProfileResource\RelationManagers;
-use App\Models\Profile;
+use App\Models\CFP;
+use App\Models\CFPAccreditationType;
+use App\Models\CFPAudienceType;
+use App\Models\CFPCourseType;
+use App\Models\CFPFormationType;
+use App\Models\CFPType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,7 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProfileResource extends Resource
 {
-    protected static ?string $model = Profile::class;
+    protected static ?string $model = CFP::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,7 +28,79 @@ class ProfileResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('company_name')
+                    ->required()
+                    ->label('Nome Società'),
+                Forms\Components\TextInput::make('email')->email()->required(),
+                Forms\Components\TextInput::make('vat_number')
+                    ->required()
+                    ->label('Partita IVA'),
+                Forms\Components\TextInput::make('address')
+                    ->required()
+                    ->label('Indirizzo'),
+                Forms\Components\TextInput::make('city')
+                    ->required()
+                    ->label('Località'),
+                Forms\Components\TextInput::make('district')
+                    ->required()
+                    ->label('Provincia'),
+                Forms\Components\TextInput::make('postal_code')
+                    ->required()
+                    ->label('C.A.P.'),
+                Forms\Components\TextInput::make('manager_name')
+                    ->required()
+                    ->label('Nome Referente'),
+                Forms\Components\TextInput::make('manager_surname')
+                    ->required()
+                    ->label('Cognome Referente'),
+                Forms\Components\TextInput::make('phone')
+                    ->required()
+                    ->label('Telefono'),
+                Forms\Components\TextInput::make('social_fb')
+                    ->required()
+                    ->label('Pagina Facebook'),
+                Forms\Components\TextInput::make('social_ig')
+                    ->required()
+                    ->label('Pagina Instagram'),
+                Forms\Components\TextInput::make('social_x')
+                    ->required()
+                    ->label('Pagina X (Twitter)'),
+                Forms\Components\TextInput::make('social_li')
+                    ->required()
+                    ->label('Pagina LinkedIn'),
+                Forms\Components\Textarea::make('description')
+                    ->required()
+                    ->label('Breve Descrizione'),
+                Forms\Components\FileUpload::make('logo')
+                    ->required()
+                    ->label('Logo Società'),
+                Forms\Components\Checkbox::make('intership_enabled')
+                    ->required()
+                    ->label('Erogazione Tirocini'),
+                Forms\Components\Checkbox::make('stage_enabled')
+                    ->required()
+                    ->label('Erogazione Stage'),
+                Forms\Components\Select::make('cfp_formation_type_id')
+                    ->required()
+                    ->label('Tipi di Formazione')
+                    ->options(CFPFormationType::all()->pluck('name', 'id')),
+                Forms\Components\Select::make('cfp_type_id')
+                    ->required()
+                    ->label('Tipo di Centro')
+                    ->options(CFPType::all()->pluck('name', 'id')),
+                Forms\Components\Select::make('cfp_accreditation_type_id')
+                    ->required()
+                    ->label('Accreditamento')
+                    ->options(CFPAccreditationType::all()->pluck('name', 'id')),
+                Forms\Components\Select::make('cfp_course_type_id')
+                    ->required()
+                    ->label('Tipo di Corsi')
+                    ->options(CFPCourseType::all()->pluck('name', 'id')),
+                Forms\Components\Select::make('cfp_audience_type_id')
+                    ->required()
+                    ->label('Tipo di Destinari')
+                    ->options(CFPAudienceType::all()->pluck('name', 'id')),
+
             ]);
     }
 
@@ -31,7 +108,8 @@ class ProfileResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('user_id'),
+                Tables\Columns\TextColumn::make('email'),
             ])
             ->filters([
                 //
@@ -60,5 +138,10 @@ class ProfileResource extends Resource
             'create' => Pages\CreateProfile::route('/create'),
             'edit' => Pages\EditProfile::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('user_id', auth()->id());
     }
 }
