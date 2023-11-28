@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CourseResource\Pages;
 use App\Filament\Resources\CourseResource\RelationManagers;
 use App\Models\Course;
+use App\Models\CourseType;
+use App\Models\Task;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -24,6 +26,37 @@ class CourseResource extends Resource
         return $form
             ->schema([
                 //
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->label('Nome'),
+                Forms\Components\Select::make('course_type_id')
+                    ->required()
+                    ->label('Tipo di corso')
+                    ->options(CourseType::all()->pluck('name', 'id')),
+                Forms\Components\Select::make('task_id')
+                    ->required()
+                    ->label('Mansione a cui associarlo')
+                    ->searchable()
+                    ->options(Task::where('active',1)->pluck('name', 'id')),
+                Forms\Components\TextInput::make('code')
+                    ->label('Codice'),
+                Forms\Components\TextInput::make('description')
+                    ->required()
+                    ->label('Descrizione'),
+                Forms\Components\FileUpload::make('banner')
+                    ->label('Locandina'),
+                Forms\Components\TextInput::make('list_price')
+                    ->required()
+                    ->numeric()
+                    ->label('Costo di listino'),
+                Forms\Components\TextInput::make('duration_hours')
+                    ->required()
+                    ->numeric()
+                    ->label('Durata (in ore)'),
+                Forms\Components\DatePicker::make('available_from')
+                    ->label('Disponibile dal'),
+                Forms\Components\DatePicker::make('available_until')
+                    ->label('Disponibile al'),
             ]);
     }
 

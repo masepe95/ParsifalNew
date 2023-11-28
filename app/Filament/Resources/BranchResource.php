@@ -32,6 +32,7 @@ class BranchResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('password')
                     ->label('Password di accesso')
+                    ->password()
                     ->required(),
                 Forms\Components\TextInput::make('address')
                     ->required()
