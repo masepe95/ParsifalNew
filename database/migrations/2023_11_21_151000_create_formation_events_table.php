@@ -19,8 +19,8 @@ return new class extends Migration
             //$table->bigInteger('tutor_id');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->integer('max_students');
-            $table->decimal('actual_price',10,2);
+            $table->integer('max_students')->nullable();
+            $table->decimal('actual_price',10,2)->nullable();
             $table->timestamps();
         });
     }

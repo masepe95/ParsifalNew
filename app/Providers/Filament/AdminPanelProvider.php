@@ -24,6 +24,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->brandLogo(asset('ParsifalLogo.jpeg'))
             ->id('admin')
             ->path('admin')
             ->login()

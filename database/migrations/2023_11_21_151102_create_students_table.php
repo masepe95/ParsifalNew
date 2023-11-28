@@ -17,9 +17,9 @@ return new class extends Migration
             //$table->bigInteger('formation_event_id'); // o così perchè anche se elimino la gerarchia dei CFP/BRANCHES/COURSES/FROMATION_EVENTS che mi lega il Candidato, poi me lo voglio conservare
             $table->integer('camelot_candidate_id');
             $table->string('email');
-            $table->string('phone');
-            $table->dateTime('parsifal_enrolled_at');
-            $table->dateTime('camelot_preregistration_email_sent_at');
+            $table->string('phone')->nullable();
+            $table->dateTime('parsifal_enrolled_at')->nullable();
+            $table->dateTime('camelot_preregistration_email_sent_at')->nullable();
             $table->foreignId('origin_id')->references('id')->on('origins');
             $table->timestamps();
         });

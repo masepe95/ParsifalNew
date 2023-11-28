@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('surname');
             $table->text('description');
             $table->string('email');
-            $table->string('phone');
-            $table->dateTime('available_from');
-            $table->dateTime('available_until');        });
+            $table->string('phone')->nullable();
+            $table->dateTime('available_from')->nullable();
+            $table->dateTime('available_until')->nullable();
+        });
     }
 
     /**

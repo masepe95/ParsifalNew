@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProfileResource\Pages;
-use App\Filament\Resources\ProfileResource\RelationManagers;
+use App\Filament\Resources\CFPResource\Pages;
+use App\Filament\Resources\CFPResource\RelationManagers;
 use App\Models\CFP;
 use App\Models\CFPAccreditationType;
 use App\Models\CFPAudienceType;
@@ -18,19 +18,18 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ProfileResource extends Resource
+class CFPResource extends Resource
 {
-    // Hide from navigation
-    protected static bool $shouldRegisterNavigation = false;
-
     protected static ?string $model = CFP::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Profilo CFP';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                //
                 Forms\Components\TextInput::make('company_name')
                     ->required()
                     ->label('Nome Società'),
@@ -60,28 +59,20 @@ class ProfileResource extends Resource
                     ->required()
                     ->label('Telefono'),
                 Forms\Components\TextInput::make('social_fb')
-                    ->required()
                     ->label('Pagina Facebook'),
                 Forms\Components\TextInput::make('social_ig')
-                    ->required()
                     ->label('Pagina Instagram'),
                 Forms\Components\TextInput::make('social_x')
-                    ->required()
                     ->label('Pagina X (Twitter)'),
                 Forms\Components\TextInput::make('social_li')
-                    ->required()
                     ->label('Pagina LinkedIn'),
                 Forms\Components\Textarea::make('description')
-                    ->required()
                     ->label('Breve Descrizione'),
                 Forms\Components\FileUpload::make('logo')
-                    ->required()
                     ->label('Logo Società'),
                 Forms\Components\Checkbox::make('internship_enabled')
-                    ->required()
                     ->label('Erogazione Tirocini'),
                 Forms\Components\Checkbox::make('stage_enabled')
-                    ->required()
                     ->label('Erogazione Stage'),
                 Forms\Components\Select::make('cfp_formation_type_id')
                     ->required()
@@ -103,7 +94,6 @@ class ProfileResource extends Resource
                     ->required()
                     ->label('Tipo di Destinatari')
                     ->options(CFPAudienceType::all()->pluck('name', 'id')),
-
             ]);
     }
 
@@ -137,9 +127,9 @@ class ProfileResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProfiles::route('/'),
-            'create' => Pages\CreateProfile::route('/create'),
-            'edit' => Pages\EditProfile::route('/{record}/edit'),
+            'index' => Pages\ListCFPS::route('/'),
+            'create' => Pages\CreateCFP::route('/create'),
+            'edit' => Pages\EditCFP::route('/{record}/edit'),
         ];
     }
 
@@ -147,4 +137,5 @@ class ProfileResource extends Resource
     {
         return parent::getEloquentQuery()->where('user_id', auth()->id());
     }
+
 }

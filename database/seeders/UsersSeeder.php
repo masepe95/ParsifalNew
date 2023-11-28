@@ -15,10 +15,11 @@ class UsersSeeder extends Seeder
     {
         //
         User::create([
-            'id'=>0,
+            'id'=>1,
             'name' => 'Admin',
             'email' => 'technology@digitransformer.com',
             'password' => 'Pa$$w0rd!',
+            'role_id' => 99,
         ]);
     }
 }

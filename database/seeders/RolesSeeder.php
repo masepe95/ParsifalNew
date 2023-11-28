@@ -15,6 +15,10 @@ class RolesSeeder extends Seeder
     {
         //
         Role::create([
+            'id'=>99,
+            'name' => 'Admin',
+        ]);
+        Role::create([
             'id'=>1,
             'name' => 'CFP',
         ]);
