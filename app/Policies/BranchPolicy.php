@@ -21,9 +21,17 @@ class BranchPolicy
      */
     public function view(User $user, Branch $branch): Response
     {
-        return $user->id === $branch->user_id
-            ? Response::allow()
-            : Response::deny('Non puoi visualizzare questo profilo');
+        if ($branch->cfp && $branch->cfp->user_id === $user->id) {
+            return Response::allow();
+        }
+
+        // Controlla se l'utente è associato direttamente al branch
+        if ($branch->user_id === $user->id) {
+            return Response::allow();
+        }
+
+        // Negare l'accesso in tutti gli altri casi
+        return Response::deny('Non puoi visualizzare questo profilo');
     }
 
     /**
@@ -41,9 +49,17 @@ class BranchPolicy
      */
     public function update(User $user, Branch $branch): Response
     {
-        return $user->id === $branch->user_id
-            ? Response::allow()
-            : Response::deny('Non puoi visualizzare questo profilo');
+        if ($branch->cfp && $branch->cfp->user_id === $user->id) {
+            return Response::allow();
+        }
+
+        // Controlla se l'utente è associato direttamente al branch
+        if ($branch->user_id === $user->id) {
+            return Response::allow();
+        }
+
+        // Negare l'accesso in tutti gli altri casi
+        return Response::deny('Non puoi visualizzare questo profilo');
     }
 
     /**

@@ -13,6 +13,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Carbon\Carbon;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Support\Collection;
 
 class StudentResource extends Resource
 {
@@ -51,7 +54,10 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('parifal_enrolled_at'),
             ])
             ->filters([
                 //
@@ -60,9 +66,17 @@ class StudentResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                BulkAction::make('Enroll')
+                    ->label('Iscrivi Ora')
+                    ->action(function (Collection $records) {
+                        $records->each(function (Student $student) {
+                            $student->update([
+                                'parsifal_enrolled_at' => Carbon::now(),
+                            ]);
+                        });
+                    })
+                    ->deselectRecordsAfterCompletion(),
+
             ]);
     }
 

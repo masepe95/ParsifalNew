@@ -4,7 +4,9 @@ namespace App\Filament\Resources\InternshipResource\Pages;
 
 use App\Filament\Resources\InternshipResource;
 use Filament\Actions;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListInternships extends ListRecords
 {
@@ -14,6 +16,18 @@ class ListInternships extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+
+    public function getTabs(): array
+    {
+        return [
+
+
+            'In Attesa' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->whereNull('parsifal_enrolled_at')),
+            'Iscritti' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('parsifal_enrolled_at')),
         ];
     }
 }

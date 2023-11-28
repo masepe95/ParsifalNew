@@ -12,6 +12,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Carbon\Carbon;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Support\Collection;
 
 class InternshipResource extends Resource
 {
@@ -39,7 +42,8 @@ class InternshipResource extends Resource
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\TextColumn::make('phone'),
-                Tables\Columns\TextColumn::make('parsifal_enrolled_at'),
+                Tables\Columns\TextColumn::make('parsifal_enrolled_at')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('created_at'),
                 Tables\Columns\TextColumn::make('updated_at')
             ])
@@ -50,9 +54,18 @@ class InternshipResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+
+                BulkAction::make('Enroll')
+                    ->label('Iscrivi Ora')
+                    ->action(function (Collection $records) {
+                        $records->each(function (Internship $internship) {
+                            $internship->update([
+                                'parsifal_enrolled_at' => Carbon::now(),
+                            ]);
+                        });
+                    })
+                    ->deselectRecordsAfterCompletion(),
+
             ]);
     }
 

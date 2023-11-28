@@ -103,6 +103,16 @@ class BranchResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('user_id', auth()->id());
+        $query = parent::getEloquentQuery();
+
+        // Se l'utente è un CFP, mostra tutti i Branch che ha creato
+        if (auth()->user()->role_id == 1) {
+            return $query->whereHas('cfp', function ($query) {
+                $query->where('user_id', auth()->id());
+            });
+        }
+
+        // Altrimenti, mostra solo i Branch associati direttamente all'utente
+        return $query->where('user_id', auth()->id());
     }
 }
