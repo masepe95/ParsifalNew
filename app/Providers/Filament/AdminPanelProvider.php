@@ -24,13 +24,13 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->brandLogo(asset('ParsifalLogo.jpeg'))
+            ->brandLogo(asset('images/logo_parsifal.png'))
             ->id('admin')
             ->path('admin')
             ->login()
             ->profile()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => 'rgb(93, 188, 169)',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

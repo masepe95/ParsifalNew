@@ -11,6 +11,7 @@ use App\Models\Course;
 use App\Models\Tutor;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -36,6 +37,8 @@ class FormationEventResource extends Resource
                     ->required()
                     ->label('Corso tenuto')
                     ->searchable()
+                    //->live()
+                    ->default(Course::where('cfp_id','=',$parentCFP->id)->first()->id)
                     ->options(Course::where('cfp_id','=',$parentCFP->id)->pluck('name', 'id')),
 //                Forms\Components\TextInput::make('name')
 //                    ->required()
@@ -47,6 +50,8 @@ class FormationEventResource extends Resource
                 Forms\Components\TextInput::make('actual_price')
                     ->required()
                     ->numeric()
+                    //->reactive()
+                    ->placeholder(fn (Get $get) => Course::find($get('course_id'))->list_price)
                     ->label('Costo effettivo'),
                 Forms\Components\TextInput::make('max_students')
                     ->numeric()
