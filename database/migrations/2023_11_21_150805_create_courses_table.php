@@ -15,14 +15,15 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cfp_id')->references('id')->on('c_f_p_s')->onDelete('cascade');
             $table->foreignId('course_type_id')->references('id')->on('course_types')->onDelete('cascade');
-            $table->string('code');
-            $table->string('topic');
+            $table->bigInteger('task_id');
+            $table->string('name');
+            $table->string('code')->nullable();
             $table->text('description');
-            $table->string('banner');
-            $table->decimal('list_price',10,2);
-            $table->integer('duration_hours');
-            $table->dateTime('available_from');
-            $table->dateTime('available_until');
+            $table->string('banner')->nullable();
+            $table->decimal('list_price',10,2)->default(0);
+            $table->integer('duration_hours')->default(0);
+            $table->dateTime('available_from')->nullable();
+            $table->dateTime('available_until')->nullable();
             $table->timestamps();
         });
     }

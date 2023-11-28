@@ -25,6 +25,16 @@ class FormationEvent extends Model
         'actual_price',
     ];
 
+    public function tutor()
+    {
+        return $this->belongsTo(Tutor::class);
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
     public function branch()
     {
         return $this->belongsTo(Branch::class);

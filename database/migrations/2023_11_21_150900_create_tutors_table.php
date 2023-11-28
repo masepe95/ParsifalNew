@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->dateTime('available_from')->nullable();
             $table->dateTime('available_until')->nullable();
+            $table->timestamps();
         });
     }
 

@@ -27,14 +27,19 @@ class CreateBranch extends CreateRecord
 
             unset($data['password']);
             $data['user_id'] = $branchUser->id;
-            $cfp_id = CFP::where('user_id', '=', auth()->id())->first();
-            $data['cfp_id'] = $cfp_id->id;
+            $cfp = CFP::where('user_id', '=', auth()->id())->first();
+            $data['cfp_id'] = $cfp->id;
 
             return static::getModel()::create($data);
         }
         catch(Exception $e){
             return('an error occurred: ' . $e->getMessage());
         }
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 
 }

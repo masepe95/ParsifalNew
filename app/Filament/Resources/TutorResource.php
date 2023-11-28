@@ -24,6 +24,26 @@ class TutorResource extends Resource
         return $form
             ->schema([
                 //
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->label('Nome'),
+                Forms\Components\TextInput::make('surname')
+                    ->required()
+                    ->label('Cognome'),
+                Forms\Components\Textarea::make('description')
+                    ->required()
+                    ->label('Descrizione'),
+                Forms\Components\TextInput::make('email')
+                    ->required()
+                    ->email()
+                    ->label('Email'),
+                Forms\Components\TextInput::make('phone')
+                    ->required()
+                    ->label('Telefono'),
+                Forms\Components\DatePicker::make('available_from')
+                    ->label('Disponibile dal'),
+                Forms\Components\DatePicker::make('available_until')
+                    ->label('Disponibile al'),
             ]);
     }
 
@@ -32,6 +52,11 @@ class TutorResource extends Resource
         return $table
             ->columns([
                 //
+                //Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('surname')->label('Cognome'),
+                Tables\Columns\TextColumn::make('description')->label('Descrizione'),
+                Tables\Columns\TextColumn::make('available_from')->label('Disponibile dal'),
+                Tables\Columns\TextColumn::make('available_until')->label('Disponibile al'),
             ])
             ->filters([
                 //
