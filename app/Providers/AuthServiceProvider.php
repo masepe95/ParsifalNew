@@ -4,7 +4,9 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
+use App\Models\Branch;
 use App\Models\CFP;
+use App\Policies\BranchPolicy;
 use App\Policies\CFPPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         CFP::class => CFPPolicy::class,
+        Branch::class => BranchPolicy::class,
     ];
 
     /**
