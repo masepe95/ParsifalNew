@@ -2,28 +2,26 @@
 
 namespace App\Policies;
 
-use App\Models\CFP;
+use App\Models\Branch;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class CFPPolicy
+class BranchPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): Response
+    public function viewAny(User $user): bool
     {
-        return $user->role_id === 1
-            ? Response::allow()
-            : Response::deny('Non puoi visualizzare questo profilo');
+        return true;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, CFP $CFP): Response
+    public function view(User $user, Branch $branch): Response
     {
-        return $user->id === $CFP->user_id
+        return $user->id === $branch->user_id
             ? Response::allow()
             : Response::deny('Non puoi visualizzare questo profilo');
     }
@@ -31,25 +29,27 @@ class CFPPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user): Response
     {
-        return false;
+        return $user->role_id === 1
+            ? Response::allow()
+            : Response::deny('Non puoi visualizzare questo profilo');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, CFP $CFP): Response
+    public function update(User $user, Branch $branch): Response
     {
-        return $user->id === $CFP->user_id
+        return $user->id === $branch->user_id
             ? Response::allow()
-            : Response::deny('Non puoi modificare questo profilo.');
+            : Response::deny('Non puoi visualizzare questo profilo');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, CFP $cFP): bool
+    public function delete(User $user, Branch $branch): bool
     {
         return false;
     }
@@ -57,7 +57,7 @@ class CFPPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, CFP $cFP): bool
+    public function restore(User $user, Branch $branch): bool
     {
         return false;
     }
@@ -65,7 +65,7 @@ class CFPPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, CFP $cFP): bool
+    public function forceDelete(User $user, Branch $branch): bool
     {
         return false;
     }
