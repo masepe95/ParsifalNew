@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Carbon\Carbon;
 use Filament\Tables\Actions\BulkAction;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\StudentsExport;
 
 class StudentResource extends Resource
 {
@@ -80,12 +82,23 @@ class StudentResource extends Resource
             ->bulkActions([
                 BulkAction::make('Enroll')
                     ->label('Iscrivi Ora')
+                    ->visible(function () {
+                        return auth()->user()->role_id != 1;
+                    })
                     ->action(function (Collection $records) {
                         $records->each(function (Student $student) {
                             $student->update([
                                 'parsifal_enrolled_at' => Carbon::now(),
                             ]);
                         });
+                    }),
+                BulkAction::make('exportExcel')
+                    ->label('Esporta in Excel')
+                    ->action(function ($records) {
+                        $recordIds = $records->pluck('id')->toArray();
+
+                        $export = new StudentsExport($recordIds);
+                        return Excel::download($export, 'students.xlsx');
                     })
                     ->deselectRecordsAfterCompletion(),
 
