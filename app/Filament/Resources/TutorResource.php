@@ -31,14 +31,14 @@ class TutorResource extends Resource
                     ->required()
                     ->label('Cognome'),
                 Forms\Components\Textarea::make('description')
-                    ->required()
+
                     ->label('Descrizione'),
                 Forms\Components\TextInput::make('email')
-                    ->required()
+
                     ->email()
                     ->label('Email'),
                 Forms\Components\TextInput::make('phone')
-                    ->required()
+
                     ->label('Telefono'),
                 Forms\Components\DatePicker::make('available_from')
                     ->label('Disponibile dal'),
