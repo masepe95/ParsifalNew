@@ -26,7 +26,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
-                    <img src="{{ asset('ParsifalLogo.jpeg') }}" alt="logo" width="180" height="45">>
+                    <img src="{{ asset('images/logo_parsifal.png') }}" alt="logo" width="180" height="45">>
                     {{-- config('app.name', 'Laravel') --}}
                 </a>
 
@@ -38,23 +38,24 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url('/') }}">{{ __('Home') }}</a>
+                            <a class="nav-link" href="{{url('/admin') }}">{{ __('Home') }}</a>
                         </li>
-                        <li class="nav-item">
+{{--                        <li class="nav-item">
                             <a class="nav-link" href="{{url('/') }}">{{ __('Nuovi Candidati') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{url('/') }}">{{ __('Studenti Registrati') }}</a>
                         </li>
                     </ul>
-
+--}}
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                        <li class="nav-item">
+{{--                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
+--}}
                         @if (Route::has('register'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
