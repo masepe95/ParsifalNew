@@ -40,7 +40,7 @@ class StudentResource extends Resource
                 Forms\Components\Select::make('formation_event_id')
                     ->required()
                     ->label('Evento Formazione')
-                    ->options(FormationEvent::all()->pluck('name', 'id')),
+                    ->options(FormationEvent::all()->pluck('start_date', 'id')),
                 Forms\Components\DatePicker::make('parsifal_enrolled_at')
                     ->label('Data Registrazione Parsifal'),
                 Forms\Components\TextInput::make('origin_id')
@@ -55,9 +55,21 @@ class StudentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('parifal_enrolled_at'),
+                Tables\Columns\TextColumn::make('name')
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('email')
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('parsifal_enrolled_at')
+                    ->badge()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('formationEvent.course.name')
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(isIndividual: true),
             ])
             ->filters([
                 //

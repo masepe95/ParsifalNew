@@ -36,11 +36,20 @@ class InternshipResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('branch_id'),
+                Tables\Columns\TextColumn::make('branch.name')
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('camelot_company_id'),
                 Tables\Columns\TextColumn::make('camelot_match_id'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('name')
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('email')
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('phone'),
                 Tables\Columns\TextColumn::make('parsifal_enrolled_at')
                     ->badge(),
