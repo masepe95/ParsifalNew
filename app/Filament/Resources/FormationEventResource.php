@@ -23,12 +23,13 @@ class FormationEventResource extends Resource
     protected static ?string $model = FormationEvent::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Eventi Formativi';
 
     public static function form(Form $form): Form
     {
         $currentUserId = auth()->id();
         $currentBranch = Branch::where('user_id', '=', $currentUserId)->first();
-        $parentCFP = CFP::where('id','=',$currentBranch->cfp_id)->first();
+        $parentCFP = CFP::where('id', '=', $currentBranch->cfp_id)->first();
 
         return $form
             ->schema([
@@ -38,15 +39,15 @@ class FormationEventResource extends Resource
                     ->label('Corso tenuto')
                     ->searchable()
                     //->live()
-                    ->default(Course::where('cfp_id','=',$parentCFP->id)->first()->id)
-                    ->options(Course::where('cfp_id','=',$parentCFP->id)->pluck('name', 'id')),
-//                Forms\Components\TextInput::make('name')
-//                    ->required()
-//                    ->label('Nome'),
+                    ->default(Course::where('cfp_id', '=', $parentCFP->id)->first()->id)
+                    ->options(Course::where('cfp_id', '=', $parentCFP->id)->pluck('name', 'id')),
+                //                Forms\Components\TextInput::make('name')
+                //                    ->required()
+                //                    ->label('Nome'),
                 Forms\Components\Select::make('tutor_id')
                     ->required()
                     ->label('Tutor')
-                    ->options(Tutor::where('branch_id','=',$currentBranch->id)->pluck('name', 'id')),
+                    ->options(Tutor::where('branch_id', '=', $currentBranch->id)->pluck('name', 'id')),
                 Forms\Components\TextInput::make('actual_price')
                     ->required()
                     ->numeric()
@@ -62,7 +63,7 @@ class FormationEventResource extends Resource
                 Forms\Components\DatePicker::make('end_date')
                     ->required()
                     ->label('Data fine'),
-                ]);
+            ]);
     }
 
     public static function table(Table $table): Table
