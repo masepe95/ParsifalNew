@@ -23,7 +23,7 @@ class CFPResource extends Resource
     protected static ?string $model = CFP::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Profilo CFP';
+    protected static ?string $navigationLabel = 'Profilo Centro di Formazione';
 
     public static function form(Form $form): Form
     {
@@ -137,5 +137,4 @@ class CFPResource extends Resource
     {
         return parent::getEloquentQuery()->where('user_id', auth()->id());
     }
-
 }

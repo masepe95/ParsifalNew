@@ -31,14 +31,14 @@ class TutorResource extends Resource
                     ->required()
                     ->label('Cognome'),
                 Forms\Components\Textarea::make('description')
-                    ->required()
+
                     ->label('Descrizione'),
                 Forms\Components\TextInput::make('email')
-                    ->required()
+
                     ->email()
                     ->label('Email'),
                 Forms\Components\TextInput::make('phone')
-                    ->required()
+
                     ->label('Telefono'),
                 Forms\Components\DatePicker::make('available_from')
                     ->label('Disponibile dal'),
@@ -57,6 +57,7 @@ class TutorResource extends Resource
                 Tables\Columns\TextColumn::make('description')->label('Descrizione'),
                 Tables\Columns\TextColumn::make('available_from')->label('Disponibile dal'),
                 Tables\Columns\TextColumn::make('available_until')->label('Disponibile al'),
+                Tables\Columns\TextColumn::make('branch_id')->label('ID Branch')->searchable(isIndividual: true),
             ])
             ->filters([
                 //

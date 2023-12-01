@@ -20,6 +20,7 @@ class CourseResource extends Resource
     protected static ?string $model = Course::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Corsi';
 
     public static function form(Form $form): Form
     {
@@ -37,7 +38,7 @@ class CourseResource extends Resource
                     ->required()
                     ->label('Mansione a cui associarlo')
                     ->searchable()
-                    ->options(Task::where('active',1)->pluck('name', 'id')),
+                    ->options(Task::where('active', 1)->pluck('name', 'id')),
                 Forms\Components\TextInput::make('code')
                     ->label('Codice (facoltativo)'),
                 Forms\Components\TextArea::make('description')
@@ -68,6 +69,8 @@ class CourseResource extends Resource
                 Tables\Columns\TextColumn::make('code')->label('Codice')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('name')->label('Argomento')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('description')->label('Descrizione')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('task_id')->label('Task')->sortable()->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('courseType.name')->label('Modalità')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('available_from')->label('Disponibile dal'),
                 Tables\Columns\TextColumn::make('available_until')->label('Disponibile al'),
             ])
@@ -99,5 +102,4 @@ class CourseResource extends Resource
             'edit' => Pages\EditCourse::route('/{record}/edit'),
         ];
     }
-
 }

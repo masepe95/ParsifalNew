@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Carbon\Carbon;
 use Filament\Tables\Actions\BulkAction;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\IntershipsExports;
 
 class InternshipResource extends Resource
 {
@@ -36,11 +38,20 @@ class InternshipResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('branch_id'),
+                Tables\Columns\TextColumn::make('branch.name')
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('camelot_company_id'),
                 Tables\Columns\TextColumn::make('camelot_match_id'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('name')
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('email')
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('phone'),
                 Tables\Columns\TextColumn::make('parsifal_enrolled_at')
                     ->badge(),
@@ -57,12 +68,23 @@ class InternshipResource extends Resource
 
                 BulkAction::make('Enroll')
                     ->label('Iscrivi Ora')
+                    ->visible(function () {
+                        return auth()->user()->role_id != 1;
+                    })
                     ->action(function (Collection $records) {
                         $records->each(function (Internship $internship) {
                             $internship->update([
                                 'parsifal_enrolled_at' => Carbon::now(),
                             ]);
                         });
+                    }),
+                BulkAction::make('exportExcel')
+                    ->label('Esporta in Excel')
+                    ->action(function ($records) {
+                        $recordIds = $records->pluck('id')->toArray();
+
+                        $export = new IntershipsExports($recordIds);
+                        return Excel::download($export, 'internships.xlsx');
                     })
                     ->deselectRecordsAfterCompletion(),
 

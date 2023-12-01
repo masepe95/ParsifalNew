@@ -35,7 +35,7 @@ class Course extends Model
 
     public function courseType()
     {
-        return $this->belongsTo(Task::class);
+        return $this->belongsTo(CourseType::class);
     }
 
     // Temporary One-To-One relationship
@@ -43,11 +43,4 @@ class Course extends Model
     {
         return $this->hasOne(Task::class);
     }
-
-    // To-Be Many-To-Many relationship
-    public function tasks()
-    {
-        return $this->belongsToMany(Task::class);
-    }
-
 }

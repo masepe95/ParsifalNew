@@ -31,4 +31,8 @@ class Student extends Model
         return $this->belongsTo(Origin::class);
     }
 
+    public function formationEvent()
+    {
+        return $this->belongsTo(FormationEvent::class);
+    }
 }
