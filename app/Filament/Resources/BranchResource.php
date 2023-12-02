@@ -19,7 +19,19 @@ class BranchResource extends Resource
     protected static ?string $model = Branch::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Profili Filiali';
+    protected static ?string $navigationLabel = 'Profili Sedi Operative';
+    protected static ?int $navigationSort = 3;
+
+    // Customize Model's Labels as per https://github.com/filamentphp/filament/discussions/5275#discussioncomment-4444250
+    public static function getModelLabel(): string
+    {
+        return __('Sede Operativa');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Sedi Operative');
+    }
 
     public static function form(Form $form): Form
     {

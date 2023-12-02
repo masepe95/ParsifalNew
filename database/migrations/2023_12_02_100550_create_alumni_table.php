@@ -28,9 +28,9 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->string('score')->nullable();
-            $table->dateTime('camelot_sign_up_date');
+            $table->dateTime('camelot_sign_up_date')->nullable();
             $table->boolean('camelot_sign_up_status')->default(0);
-            $table->integer('camelot_recruitment_process_step_id')->default(0);
+            $table->integer('camelot_recruitment_process_step_id')->nullable();
             $table->timestamps();
         });
     }

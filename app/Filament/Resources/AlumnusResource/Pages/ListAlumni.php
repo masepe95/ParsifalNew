@@ -13,6 +13,9 @@ class ListAlumni extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            \EightyNine\ExcelImport\ExcelImportAction::make()
+                ->color("primary")
+                ->use(\App\Imports\AlumniImport::class),
             Actions\CreateAction::make(),
         ];
     }

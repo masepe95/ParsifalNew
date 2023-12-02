@@ -21,7 +21,7 @@ class BranchPolicy
      */
     public function view(User $user, Branch $branch): Response
     {
-        if ($branch->cfp && $branch->cfp->user_id === $user->id) {
+        if ($branch->cfp->user_id === $user->id) {
             return Response::allow();
         }
 

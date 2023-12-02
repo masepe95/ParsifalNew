@@ -21,6 +21,18 @@ class CourseResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Catalogo Corsi';
+    protected static ?int $navigationSort = 5;
+
+    // Customize Model's Labels as per https://github.com/filamentphp/filament/discussions/5275#discussioncomment-4444250
+    public static function getModelLabel(): string
+    {
+        return __('Corso');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Corsi');
+    }
 
     public static function form(Form $form): Form
     {

@@ -25,6 +25,17 @@ class CFPResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Profilo Centro di Formazione';
 
+    // Customize Model's Labels as per https://github.com/filamentphp/filament/discussions/5275#discussioncomment-4444250
+    public static function getModelLabel(): string
+    {
+        return __('Centro Formativo');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Centri Formativi');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

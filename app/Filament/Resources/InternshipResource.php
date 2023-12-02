@@ -25,6 +25,18 @@ class InternshipResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'ADS Tirocini';
+    protected static ?int $navigationSort = 9;
+
+    // Customize Model's Labels as per https://github.com/filamentphp/filament/discussions/5275#discussioncomment-4444250
+    public static function getModelLabel(): string
+    {
+        return __('Tirocinio');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Tirocini');
+    }
 
     public static function form(Form $form): Form
     {

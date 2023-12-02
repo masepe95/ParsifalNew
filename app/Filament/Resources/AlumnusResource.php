@@ -18,6 +18,19 @@ class AlumnusResource extends Resource
     protected static ?string $model = Alumnus::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Elenco Alunni';
+    protected static ?int $navigationSort = 4;
+
+    // Customize Model's Labels as per https://github.com/filamentphp/filament/discussions/5275#discussioncomment-4444250
+    public static function getModelLabel(): string
+    {
+        return __('Alunno');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Alunni');
+    }
 
     public static function form(Form $form): Form
     {

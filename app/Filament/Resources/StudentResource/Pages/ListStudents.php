@@ -21,8 +21,6 @@ class ListStudents extends ListRecords
     public function getTabs(): array
     {
         return [
-
-
             'In Gestione' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereNull('parsifal_enrolled_at')),
             'Iscritti' => Tab::make()

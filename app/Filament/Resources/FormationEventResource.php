@@ -24,6 +24,19 @@ class FormationEventResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Programma Corsi Filiali';
+    protected static ?int $navigationSort = 7;
+
+
+    // Customize Model's Labels as per https://github.com/filamentphp/filament/discussions/5275#discussioncomment-4444250
+    public static function getModelLabel(): string
+    {
+        return __('Evento Formativo');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Eventi Formativi');
+    }
 
     public static function form(Form $form): Form
     {

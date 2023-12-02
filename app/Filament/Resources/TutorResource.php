@@ -19,6 +19,18 @@ class TutorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Tutor/Operatori';
+    protected static ?int $navigationSort = 6;
+
+    // Customize Model's Labels as per https://github.com/filamentphp/filament/discussions/5275#discussioncomment-4444250
+    public static function getModelLabel(): string
+    {
+        return __('Tutor / Operatore');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Tutor / Operatori');
+    }
 
     public static function form(Form $form): Form
     {
