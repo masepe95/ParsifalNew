@@ -21,6 +21,7 @@ class Student extends Model
         'email',
         'phone',
         'parsifal_enrolled_at',
+        'status_id',
         'camelot_preregistration_email_sent_at',
         'origin_id',
     ];
@@ -34,5 +35,10 @@ class Student extends Model
     public function formationEvent()
     {
         return $this->belongsTo(FormationEvent::class);
+    }
+
+    public function status()
+    {
+        return $this->hasOne(StudentStatus::class);
     }
 }

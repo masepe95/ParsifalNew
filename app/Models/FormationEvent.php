@@ -19,6 +19,8 @@ class FormationEvent extends Model
         'branch_id',
         'course_id',
         'tutor_id',
+        'banner',
+        'course_type_id',
         'start_date',
         'end_date',
         'max_students',
@@ -35,12 +37,17 @@ class FormationEvent extends Model
         return $this->belongsTo(Course::class);
     }
 
+    public function courseType()
+    {
+        return $this->belongsTo(CourseType::class);
+    }
+
     public function branch()
     {
         return $this->belongsTo(Branch::class);
     }
 
-    public function task()
+    public function task() //TODO: ??
     {
         return $this->hasOne(Task::class);
     }

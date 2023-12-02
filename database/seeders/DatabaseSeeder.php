@@ -49,14 +49,17 @@ class DatabaseSeeder extends Seeder
         2-	NATIVO PARSIFAL
 
         */
-        $this->call('Database\Seeders\RolesSeeder');
-        $this->call('Database\Seeders\UsersSeeder');
-        $this->call('Database\Seeders\OriginsSeeder');
-        $this->call('Database\Seeders\CourseTypesSeeder');
-        $this->call('Database\Seeders\CfpAccreditationTypesSeeder');
-        $this->call('Database\Seeders\CfpAudienceTypesSeeder');
-        $this->call('Database\Seeders\CfpCourseTypesSeeder');
-        $this->call('Database\Seeders\CfpFormationTypesSeeder');
-        $this->call('Database\Seeders\CfpTypesSeeder');
+//        $this->call('Database\Seeders\RolesSeeder');
+//        $this->call('Database\Seeders\UsersSeeder');
+//        $this->call('Database\Seeders\OriginsSeeder');
+//        $this->call('Database\Seeders\CourseTypesSeeder');
+        $this->call('Database\Seeders\TutorTypesSeeder');
+        $this->call('Database\Seeders\InternshipStatusesSeeder');
+        $this->call('Database\Seeders\StudentStatusesSeeder');
+//        $this->call('Database\Seeders\CfpAccreditationTypesSeeder');
+//        $this->call('Database\Seeders\CfpAudienceTypesSeeder');
+//        $this->call('Database\Seeders\CfpCourseTypesSeeder');
+//        $this->call('Database\Seeders\CfpFormationTypesSeeder');
+//        $this->call('Database\Seeders\CfpTypesSeeder');
     }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tutor extends Model
+class StudentStatus extends Model
 {
     use HasFactory;
 
@@ -16,20 +16,12 @@ class Tutor extends Model
      */
     protected $fillable = [
         'id',
-        'branch_id',
         'name',
-        'surname',
-        'description',
-        'tutor_type_id',
-        'email',
-        'phone',
-        'available_from',
-        'available_until',
     ];
 
-    public function tutorType()
+    public function students()
     {
-        return $this->belongsTo(TutorType::class);
+        return $this->hasMany(Student::class);
     }
 
 }

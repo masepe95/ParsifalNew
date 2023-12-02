@@ -28,4 +28,14 @@ class Internship extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function status()
+    {
+        return $this->hasOne(InternshipStatus::class);
+    }
+
+    public function tutor()
+    {
+        return $this->hasOne(Tutor::class);
+    }
+
 }
