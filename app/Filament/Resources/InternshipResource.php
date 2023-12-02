@@ -17,13 +17,14 @@ use Filament\Tables\Actions\BulkAction;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\IntershipsExports;
+use Filament\Tables\Actions\Action;
 
 class InternshipResource extends Resource
 {
     protected static ?string $model = Internship::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Tirocini';
+    protected static ?string $navigationLabel = 'ADS Tirocini';
 
     public static function form(Form $form): Form
     {
@@ -63,6 +64,7 @@ class InternshipResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+
             ])
             ->bulkActions([
 
@@ -102,7 +104,7 @@ class InternshipResource extends Resource
     {
         return [
             'index' => Pages\ListInternships::route('/'),
-            'create' => Pages\CreateInternship::route('/create'),
+            // 'create' => Pages\CreateInternship::route('/create'),
             'edit' => Pages\EditInternship::route('/{record}/edit'),
         ];
     }

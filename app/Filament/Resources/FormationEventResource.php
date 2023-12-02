@@ -23,7 +23,7 @@ class FormationEventResource extends Resource
     protected static ?string $model = FormationEvent::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Eventi Formativi';
+    protected static ?string $navigationLabel = 'Programma Corsi Filiali';
 
     public static function form(Form $form): Form
     {
@@ -72,10 +72,8 @@ class FormationEventResource extends Resource
             ->columns([
                 //
                 Tables\Columns\TextColumn::make('id')->label('Codice Evento')->sortable()->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('course.name')->label('Corso tenuto')->sortable()->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('course.code')->label('Codice Corso')->sortable()->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('tutor.name')->label('Tutor')->sortable()->searchable(isIndividual: true),
-                //Tables\Columns\TextColumn::make('description')->label('Descrizione'),
+                Tables\Columns\TextColumn::make('course.name')->label('Nome Corso')->sortable()->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('course.list_price')->label('Prezzo')->sortable(),
                 Tables\Columns\TextColumn::make('start_date')->label('Data inizio'),
                 Tables\Columns\TextColumn::make('end_date')->label('Data fine'),
             ])

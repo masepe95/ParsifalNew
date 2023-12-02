@@ -23,7 +23,7 @@ class ListStudents extends ListRecords
         return [
 
 
-            'In Attesa' => Tab::make()
+            'In Gestione' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereNull('parsifal_enrolled_at')),
             'Iscritti' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('parsifal_enrolled_at')),

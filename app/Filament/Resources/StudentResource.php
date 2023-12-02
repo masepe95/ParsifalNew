@@ -18,13 +18,14 @@ use Filament\Tables\Actions\BulkAction;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StudentsExport;
+use Filament\Tables\Actions\Action;
 
 class StudentResource extends Resource
 {
     protected static ?string $model = Student::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Studenti';
+    protected static ?string $navigationLabel = 'ADS Corsi';
 
 
     public static function form(Form $form): Form
@@ -79,6 +80,12 @@ class StudentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Action::make('viewCurriculum')
+                    ->icon('heroicon-m-eye')
+                    ->label('Curriculum')
+                    ->modalContent(fn (Student $record) => view('admin.NOMEDELFILEBLADE', ['collection' => $record]))
+                    ->modalWidth('7xl')
+                    ->modalSubmitAction(false),
             ])
             ->bulkActions([
                 BulkAction::make('Enroll')
@@ -117,7 +124,7 @@ class StudentResource extends Resource
     {
         return [
             'index' => Pages\ListStudents::route('/'),
-            'create' => Pages\CreateStudent::route('/create'),
+            // 'create' => Pages\CreateStudent::route('/create'),
             'edit' => Pages\EditStudent::route('/{record}/edit'),
         ];
     }

@@ -18,6 +18,7 @@ class TutorResource extends Resource
     protected static ?string $model = Tutor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Tutor/Operatori';
 
     public static function form(Form $form): Form
     {
