@@ -28,7 +28,7 @@ class BranchResource extends Resource
         return __('Sede Operativa');
     }
 
-    public static function getPluralModelLabel(): string
+     public static function getPluralModelLabel(): string
     {
         return __('Sedi Operative');
     }
@@ -39,13 +39,18 @@ class BranchResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->label('Nome Filiale'),
+                    ->label('Nome Sede'),
                 Forms\Components\TextInput::make('email')
-                    ->email()->unique(table: User::class)
+                    ->email()
+                    ->unique(table: User::class)
+                    //->disabledOn ('edit') // we don't want to change the account "username"
+                    ->hiddenOn('edit')
                     ->required(),
                 Forms\Components\TextInput::make('password')
                     ->label('Password di accesso')
                     ->password()
+                    //->placeholder('********')
+                    ->hiddenOn('edit')
                     ->required(),
                 Forms\Components\TextInput::make('address')
                     ->required()
@@ -79,10 +84,11 @@ class BranchResource extends Resource
         return $table
             ->columns([
                 //
-                Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('user_id'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('address'),
+//                Tables\Columns\TextColumn::make('id'),
+//                Tables\Columns\TextColumn::make('user_id'),
+                Tables\Columns\TextColumn::make('name')->label('Nome'),
+                Tables\Columns\TextColumn::make('email')->label('Email (username di accesso)'),
+                Tables\Columns\TextColumn::make('address')->label('Indirizzo'),
             ])
             ->filters([
                 //
@@ -113,6 +119,13 @@ class BranchResource extends Resource
         ];
     }
 
+
+// Filter resource instances based on owner
+//    public static function getEloquentQuery(): Builder
+//    {
+//        return parent::getEloquentQuery()->where('cfp_id', \App\Models\CFP::where('user_id', auth()->id())->first()->id );
+//    }
+//
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();

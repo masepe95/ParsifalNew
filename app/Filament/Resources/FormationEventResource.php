@@ -12,6 +12,7 @@ use App\Models\Tutor;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -23,7 +24,7 @@ class FormationEventResource extends Resource
     protected static ?string $model = FormationEvent::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Programma Corsi Filiali';
+    protected static ?string $navigationLabel = 'Programma Corsi';
     protected static ?int $navigationSort = 7;
 
 
@@ -36,6 +37,15 @@ class FormationEventResource extends Resource
     public static function getPluralModelLabel(): string
     {
         return __('Eventi Formativi');
+    }
+
+    // Filter resource instances based on owner
+    public static function getEloquentQuery(): Builder
+    {
+//        $current_branch = Branch::where('user_id', auth()->id())->first();
+//        $current_branch_id = $current_branch->id;
+//        return parent::getEloquentQuery()->where('branch_id', $current_branch_id);
+        return parent::getEloquentQuery()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
     }
 
     public static function form(Form $form): Form
@@ -51,21 +61,24 @@ class FormationEventResource extends Resource
                     ->required()
                     ->label('Corso tenuto')
                     ->searchable()
-                    //->live()
-                    ->default(Course::where('cfp_id', '=', $parentCFP->id)->first()->id)
-                    ->options(Course::where('cfp_id', '=', $parentCFP->id)->pluck('name', 'id')),
+                    //->default(Course::where('cfp_id', '=', $parentCFP->id)->first()->id)
+                    ->options(Course::where('cfp_id', '=', $parentCFP->id)->pluck('name', 'id'))
+                    //->reactive(),
+                    ->live(),
                 //                Forms\Components\TextInput::make('name')
                 //                    ->required()
                 //                    ->label('Nome'),
                 Forms\Components\Select::make('tutor_id')
                     ->required()
                     ->label('Tutor')
+                    //->placeholder('Crea prima un Tutor')
                     ->options(Tutor::where('branch_id', '=', $currentBranch->id)->pluck('name', 'id')),
                 Forms\Components\TextInput::make('actual_price')
                     ->required()
                     ->numeric()
                     //->reactive()
-                    ->placeholder(fn (Get $get) => Course::find($get('course_id'))->list_price)
+                    ->placeholder(fn (Get $get) => $get('course_id') ? Course::find($get('course_id'))->list_price : 0 )
+                    //->default( function (callable $get){$get('course_id') ? Course::find($get('course_id'))->list_price : 0;})
                     ->label('Costo effettivo'),
                 Forms\Components\TextInput::make('max_students')
                     ->numeric()
@@ -85,6 +98,7 @@ class FormationEventResource extends Resource
             ->columns([
                 //
                 Tables\Columns\TextColumn::make('id')->label('Codice Evento')->sortable()->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('branch.name')->label('Nome Sede')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('course.name')->label('Nome Corso')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('course.list_price')->label('Prezzo')->sortable(),
                 Tables\Columns\TextColumn::make('start_date')->label('Data inizio'),

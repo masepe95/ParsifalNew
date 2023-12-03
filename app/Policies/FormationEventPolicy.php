@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Branch;
 use App\Models\FormationEvent;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -21,7 +22,12 @@ class FormationEventPolicy
      */
     public function view(User $user, FormationEvent $formationEvent): bool
     {
-        return true;
+        //return true;
+        // Controlla se l'utente è associato direttamente al modello
+        $branch = Branch::where($formationEvent->branch_id,'id');
+        if ($formationEvent->branch->user_id === $user->id) {
+            return Response::allow();
+        }
     }
 
     /**
@@ -39,6 +45,18 @@ class FormationEventPolicy
      */
     public function update(User $user, FormationEvent $formationEvent): Response
     {
+        //return true;
+
+        // Controlla se l'utente è associato direttamente al modello
+        $branch = Branch::where($formationEvent->branch_id,'id');
+        if ($formationEvent->branch->user_id === $user->id) {
+            return Response::allow();
+        }
+        else{
+            return Response::deny();
+        }
+
+        // Old: se l'utente NON è un CFP (quindi è Filiale)
         return $user->role_id !== 1
             ? Response::allow()
             : Response::deny('Non puoi visualizzare questo profilo');

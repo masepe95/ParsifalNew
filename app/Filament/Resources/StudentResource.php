@@ -95,7 +95,7 @@ class StudentResource extends Resource
                 Action::make('viewCurriculum')
                     ->icon('heroicon-m-eye')
                     ->label('Curriculum')
-                    ->modalContent(fn (Student $record) => view('admin.NOMEDELFILEBLADE', ['collection' => $record]))
+                    ->modalContent(fn (Student $record) => view('students.show-cv', ['collection' => $record]))
                     ->modalWidth('7xl')
                     ->modalSubmitAction(false),
             ])

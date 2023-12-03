@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TutorResource\Pages;
 use App\Filament\Resources\TutorResource\RelationManagers;
+use App\Models\Branch;
 use App\Models\Tutor;
+use App\Models\TutorType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -32,6 +34,12 @@ class TutorResource extends Resource
         return __('Tutor / Operatori');
     }
 
+    // Filter resource instances based on owner
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -44,14 +52,16 @@ class TutorResource extends Resource
                     ->required()
                     ->label('Cognome'),
                 Forms\Components\Textarea::make('description')
-
                     ->label('Descrizione'),
+                Forms\Components\Select::make('tutor_type_id')
+                    ->required()
+                    ->searchable()
+                    ->options(TutorType::all()->pluck('name', 'id'))
+                    ->label('Tipo di Collaborazione'),
                 Forms\Components\TextInput::make('email')
-
                     ->email()
                     ->label('Email'),
                 Forms\Components\TextInput::make('phone')
-
                     ->label('Telefono'),
                 Forms\Components\DatePicker::make('available_from')
                     ->label('Disponibile dal'),

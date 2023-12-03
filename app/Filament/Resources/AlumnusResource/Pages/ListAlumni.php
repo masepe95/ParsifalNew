@@ -16,7 +16,7 @@ class ListAlumni extends ListRecords
             \EightyNine\ExcelImport\ExcelImportAction::make()
                 ->color("primary")
                 ->use(\App\Imports\AlumniImport::class),
-            Actions\CreateAction::make(),
+            //Actions\CreateAction::make(),
         ];
     }
 }
