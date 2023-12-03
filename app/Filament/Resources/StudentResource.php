@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
+use App\Models\Branch;
+use App\Models\CFP;
 use App\Models\FormationEvent;
 use App\Models\Student;
 use Filament\Forms;
@@ -39,6 +41,23 @@ class StudentResource extends Resource
         return __('Segnalazioni Corsi');
     }
 
+    // Filter resource instances based on owner
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        // Se l'utente è un CFP, mostra tutti gli Alunni che hanno creato le sue filiali
+        if (auth()->user()->role_id == 1) {
+            return $query->whereHas('formationEvent.branch', function ($query) {
+                $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
+            });
+        }
+
+        // Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
+        return parent::getEloquentQuery()->whereHas('formationEvent', function($query){
+            $query->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
+        });
+    }
 
     public static function form(Form $form): Form
     {
@@ -71,18 +90,19 @@ class StudentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('formationEvent.branch.name')->label('Sede')->searchable(isIndividual: true)->visible(fn (): bool => auth()->user()->role_id == CFP),
+                Tables\Columns\TextColumn::make('name')->label('Nome')
                     ->sortable()
                     ->toggleable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('email')
+                Tables\Columns\TextColumn::make('email')->label('Email')
                     ->sortable()
                     ->toggleable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('parsifal_enrolled_at')
+                Tables\Columns\TextColumn::make('parsifal_enrolled_at')->label('Iscritto')
                     ->badge()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('formationEvent.course.name')
+                Tables\Columns\TextColumn::make('formationEvent.course.name')->label('Corso in Programma')
                     ->sortable()
                     ->toggleable()
                     ->searchable(isIndividual: true),

@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AlumnusResource\Pages;
 use App\Filament\Resources\AlumnusResource\RelationManagers;
 use App\Models\Alumnus;
+use App\Models\CFP;
+use App\Models\Branch;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -32,6 +34,21 @@ class AlumnusResource extends Resource
         return __('Alunni');
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        // Se l'utente è un CFP, mostra tutti gli Alunni che hanno creato le sue filiali
+        if (auth()->user()->role_id == 1) {
+            return $query->whereHas('branch', function ($query) {
+                $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
+            });
+        }
+
+        // Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
+        return parent::getEloquentQuery()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -46,7 +63,7 @@ class AlumnusResource extends Resource
             ->columns([
                 //
                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('branch.name')->label('Sede')->sortable()->searchable()->toggleable(),
+                Tables\Columns\TextColumn::make('branch.name')->label('Sede')->searchable(isIndividual: true)->visible(fn (): bool => auth()->user()->role_id == CFP),
                 Tables\Columns\TextColumn::make('name')->label('Nome')->sortable()->searchable()->toggleable(),
                 Tables\Columns\TextColumn::make('surname')->label('Cognome')->sortable()->searchable()->toggleable(),
                 Tables\Columns\TextColumn::make('address')->label('Indirizzo')->sortable()->searchable()->toggleable(),

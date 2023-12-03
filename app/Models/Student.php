@@ -41,4 +41,6 @@ class Student extends Model
     {
         return $this->hasOne(StudentStatus::class);
     }
+
+
 }

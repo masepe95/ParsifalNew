@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\FormationEventResource\Pages;
 use App\Filament\Resources\FormationEventResource\RelationManagers;
+use App\Models\CourseType;
 use App\Models\FormationEvent;
 use App\Models\CFP;
 use App\Models\Branch;
@@ -42,10 +43,18 @@ class FormationEventResource extends Resource
     // Filter resource instances based on owner
     public static function getEloquentQuery(): Builder
     {
-//        $current_branch = Branch::where('user_id', auth()->id())->first();
-//        $current_branch_id = $current_branch->id;
-//        return parent::getEloquentQuery()->where('branch_id', $current_branch_id);
+        $query = parent::getEloquentQuery();
+
+        // Se l'utente è un CFP, mostra tutti gli Alunni che hanno creato le sue filiali
+        if (auth()->user()->role_id == 1) {
+            return $query->whereHas('branch', function ($query) {
+                $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
+            });
+        }
+
+        // Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
         return parent::getEloquentQuery()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
+
     }
 
     public static function form(Form $form): Form
@@ -68,11 +77,17 @@ class FormationEventResource extends Resource
                 //                Forms\Components\TextInput::make('name')
                 //                    ->required()
                 //                    ->label('Nome'),
+                Forms\Components\Select::make('course_type_id')
+                    ->required()
+                    ->label('Tipo di corso')
+                    ->options(CourseType::all()->pluck('name', 'id')),
                 Forms\Components\Select::make('tutor_id')
                     ->required()
                     ->label('Tutor')
                     //->placeholder('Crea prima un Tutor')
                     ->options(Tutor::where('branch_id', '=', $currentBranch->id)->pluck('name', 'id')),
+                Forms\Components\FileUpload::make('banner')
+                    ->label('Locandina'),
                 Forms\Components\TextInput::make('actual_price')
                     ->required()
                     ->numeric()
@@ -98,7 +113,7 @@ class FormationEventResource extends Resource
             ->columns([
                 //
                 Tables\Columns\TextColumn::make('id')->label('Codice Evento')->sortable()->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('branch.name')->label('Nome Sede')->sortable()->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('branch.name')->label('Sede')->searchable(isIndividual: true)->visible(fn (): bool => auth()->user()->role_id == CFP),
                 Tables\Columns\TextColumn::make('course.name')->label('Nome Corso')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('course.list_price')->label('Prezzo')->sortable(),
                 Tables\Columns\TextColumn::make('start_date')->label('Data inizio'),

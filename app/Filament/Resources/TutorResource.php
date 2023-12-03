@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TutorResource\Pages;
 use App\Filament\Resources\TutorResource\RelationManagers;
 use App\Models\Branch;
+use App\Models\CFP;
 use App\Models\Tutor;
 use App\Models\TutorType;
 use Filament\Forms;
@@ -37,6 +38,16 @@ class TutorResource extends Resource
     // Filter resource instances based on owner
     public static function getEloquentQuery(): Builder
     {
+        $query = parent::getEloquentQuery();
+
+        // Se l'utente è un CFP, mostra tutti gli Alunni che hanno creato le sue filiali
+        if (auth()->user()->role_id == 1) {
+            return $query->whereHas('branch', function ($query) {
+                $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
+            });
+        }
+
+        // Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
         return parent::getEloquentQuery()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
     }
 
@@ -76,11 +87,11 @@ class TutorResource extends Resource
             ->columns([
                 //
                 //Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('branch.name')->label('Sede')->searchable(isIndividual: true)->visible(fn (): bool => auth()->user()->role_id == CFP),
                 Tables\Columns\TextColumn::make('surname')->label('Cognome'),
                 Tables\Columns\TextColumn::make('description')->label('Descrizione'),
                 Tables\Columns\TextColumn::make('available_from')->label('Disponibile dal'),
                 Tables\Columns\TextColumn::make('available_until')->label('Disponibile al'),
-                Tables\Columns\TextColumn::make('branch_id')->label('ID Branch')->searchable(isIndividual: true),
             ])
             ->filters([
                 //

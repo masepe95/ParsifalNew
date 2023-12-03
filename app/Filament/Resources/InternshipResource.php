@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\InternshipResource\Pages;
 use App\Filament\Resources\InternshipResource\RelationManagers;
+use App\Models\Branch;
+use App\Models\CFP;
 use App\Models\Internship;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -38,6 +40,22 @@ class InternshipResource extends Resource
         return __('Tirocini');
     }
 
+    // Filter resource instances based on owner
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        // Se l'utente è un CFP, mostra tutti gli Alunni che hanno creato le sue filiali
+        if (auth()->user()->role_id == 1) {
+            return $query->whereHas('branch', function ($query) {
+                $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
+            });
+        }
+
+        // Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
+        return parent::getEloquentQuery()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -51,25 +69,24 @@ class InternshipResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('branch.name')
+                Tables\Columns\TextColumn::make('branch.name')->label('Sede')->searchable(isIndividual: true)->visible(fn (): bool => auth()->user()->role_id == CFP),
+                //Tables\Columns\TextColumn::make('camelotCompanyProfile.name')->label('Azienda'),
+                Tables\Columns\TextColumn::make('camelot_company_id')->label('Id Azienda in Camelot'),
+                Tables\Columns\TextColumn::make('camelot_match_id')->label('Camelot Match Id'),
+                Tables\Columns\TextColumn::make('name')->label('Ragione Sociale Azienda')
                     ->sortable()
                     ->toggleable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('camelot_company_id'),
-                Tables\Columns\TextColumn::make('camelot_match_id'),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('email')->label('Email')
                     ->sortable()
                     ->toggleable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('email')
-                    ->sortable()
-                    ->toggleable()
-                    ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('phone'),
+                Tables\Columns\TextColumn::make('phone')->label('Telefono'),
                 Tables\Columns\TextColumn::make('parsifal_enrolled_at')
+                    ->label('Data Attivazione Tirocinio')
                     ->badge(),
-                Tables\Columns\TextColumn::make('created_at'),
-                Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('created_at')->label('Data Segnalazione in Parsifal'),
+                //Tables\Columns\TextColumn::make('updated_at')
             ])
             ->filters([
                 //

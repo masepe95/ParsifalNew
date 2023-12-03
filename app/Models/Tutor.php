@@ -32,4 +32,9 @@ class Tutor extends Model
         return $this->belongsTo(TutorType::class);
     }
 
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
 }

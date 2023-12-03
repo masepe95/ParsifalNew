@@ -50,8 +50,9 @@ class BranchResource extends Resource
                     ->label('Password di accesso')
                     ->password()
                     //->placeholder('********')
-                    ->hiddenOn('edit')
-                    ->required(),
+                    //->hiddenOn('edit')
+                    ->visible(fn (): bool => auth()->user()->role_id == CFP)
+                    ->required(fn (string $operation): bool => $operation === 'create'),
                 Forms\Components\TextInput::make('address')
                     ->required()
                     ->label('Indirizzo'),
@@ -119,19 +120,12 @@ class BranchResource extends Resource
         ];
     }
 
-
-// Filter resource instances based on owner
-//    public static function getEloquentQuery(): Builder
-//    {
-//        return parent::getEloquentQuery()->where('cfp_id', \App\Models\CFP::where('user_id', auth()->id())->first()->id );
-//    }
-//
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
 
         // Se l'utente è un CFP, mostra tutti i Branch che ha creato
-        if (auth()->user()->role_id == 1) {
+        if (auth()->user()->role_id == CFP) {
             return $query->whereHas('cfp', function ($query) {
                 $query->where('user_id', auth()->id());
             });

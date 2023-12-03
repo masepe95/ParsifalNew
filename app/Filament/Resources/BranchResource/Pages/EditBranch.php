@@ -15,9 +15,11 @@ class EditBranch extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $branchUser = User::find($record->user_id);
-        $branchUser->password = $data['password'];
-        $branchUser->save();
+        if( isset($data['password']) && $data['password'] != '' ){
+            $branchUser = User::find($record->user_id);
+            $branchUser->password = $data['password'];
+            $branchUser->save();
+        }
 
         unset($data['password']);
 
