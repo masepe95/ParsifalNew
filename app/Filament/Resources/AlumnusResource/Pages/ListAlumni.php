@@ -15,6 +15,7 @@ class ListAlumni extends ListRecords
         return [
             \EightyNine\ExcelImport\ExcelImportAction::make()
                 ->color("primary")
+                ->visible(auth()->user()->role_id == BRANCH)
                 ->use(\App\Imports\AlumniImport::class),
             //Actions\CreateAction::make(),
         ];

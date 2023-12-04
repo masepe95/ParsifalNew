@@ -39,14 +39,15 @@ class AlumnusResource extends Resource
         $query = parent::getEloquentQuery();
 
         // Se l'utente è un CFP, mostra tutti gli Alunni che hanno creato le sue filiali
-        if (auth()->user()->role_id == 1) {
+        if (auth()->user()->role_id == CFP) {
             return $query->whereHas('branch', function ($query) {
                 $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
             });
         }
-
-        // Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
-        return parent::getEloquentQuery()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
+        else{
+            // Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
+            return parent::getEloquentQuery()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
+        }
     }
 
     public static function form(Form $form): Form
