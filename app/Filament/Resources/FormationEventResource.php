@@ -74,9 +74,10 @@ class FormationEventResource extends Resource
                     ->options(Course::where('cfp_id', '=', $parentCFP->id)->pluck('name', 'id'))
                     //->reactive(),
                     ->live(),
-                //                Forms\Components\TextInput::make('name')
-                //                    ->required()
-                //                    ->label('Nome'),
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->placeholder(fn (Get $get) => $get('course_id') ? Course::find($get('course_id'))->name : null )
+                    ->label('Nome'),
                 Forms\Components\Select::make('course_type_id')
                     ->required()
                     ->label('Tipo di corso')
@@ -115,6 +116,7 @@ class FormationEventResource extends Resource
                 Tables\Columns\TextColumn::make('id')->label('Codice Evento')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('branch.name')->label('Sede')->searchable(isIndividual: true)->visible(fn (): bool => auth()->user()->role_id == CFP),
                 Tables\Columns\TextColumn::make('course.name')->label('Nome Corso')->sortable()->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('name')->label('Nome Evento')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('course.list_price')->label('Prezzo')->sortable(),
                 Tables\Columns\TextColumn::make('start_date')->label('Data inizio'),
                 Tables\Columns\TextColumn::make('end_date')->label('Data fine'),

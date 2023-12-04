@@ -7,6 +7,7 @@ use App\Filament\Resources\InternshipResource\RelationManagers;
 use App\Models\Branch;
 use App\Models\CFP;
 use App\Models\Internship;
+use App\Models\InternshipStatus;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -60,9 +61,23 @@ class InternshipResource extends Resource
     {
         return $form
             ->schema([
-                //
-            ]);
-    }
+                Forms\Components\TextInput::make('name')
+                    ->label('Ragione Sociale')
+                    ->required(),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->label('E-Mail')
+                    ->required(),
+                Forms\Components\TextInput::make('phone')
+                    ->label('Telefono'),
+                Forms\Components\DatePicker::make('parsifal_enrolled_at')
+                    ->label('Data Registrazione Parsifal'),
+                Forms\Components\Select::make('internship_status_id')
+                    ->required()
+                    ->searchable()
+                    ->options(InternshipStatus::all()->pluck('name', 'id'))
+                    ->label('Stato Contatto'),
+            ]);    }
 
     public static function table(Table $table): Table
     {
@@ -82,10 +97,13 @@ class InternshipResource extends Resource
                     ->toggleable()
                     ->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('phone')->label('Telefono'),
+                Tables\Columns\TextColumn::make('created_at')->label('Data Segnalazione in Parsifal'),
+                Tables\Columns\TextColumn::make('status.name')->label('Stato Contatto')
+                    ->badge()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('parsifal_enrolled_at')
                     ->label('Data Attivazione Tirocinio')
                     ->badge(),
-                Tables\Columns\TextColumn::make('created_at')->label('Data Segnalazione in Parsifal'),
                 //Tables\Columns\TextColumn::make('updated_at')
             ])
             ->filters([

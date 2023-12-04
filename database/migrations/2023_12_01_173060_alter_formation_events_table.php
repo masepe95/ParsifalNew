@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigInteger('course_type_id')->after('course_id');
             //$table->foreignId('tutor_id')->references('id')->on('tutors');
             $table->bigInteger('tutor_id')->after('course_type_id');
+            $table->string('name')->nullable()->after('tutor_id');
             $table->string('banner')->nullable()->after('tutor_id');
         });
     }
@@ -33,6 +34,7 @@ return new class extends Migration
             //$table->dropConstrainedForeignId('tutor_id');
             $table->dropColumn('tutor_id');
             $table->dropColumn('banner');
+            $table->dropColumn('name');
         });
     }
 };

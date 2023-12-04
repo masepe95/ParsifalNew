@@ -30,7 +30,7 @@ class Internship extends Model
 
     public function status()
     {
-        return $this->hasOne(InternshipStatus::class);
+        return $this->hasOne(InternshipStatus::class, 'id', 'internship_status_id');
     }
 
     public function tutor()

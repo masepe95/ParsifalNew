@@ -8,6 +8,7 @@ use App\Models\Branch;
 use App\Models\CFP;
 use App\Models\FormationEvent;
 use App\Models\Student;
+use App\Models\StudentStatus;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -75,13 +76,18 @@ class StudentResource extends Resource
                 Forms\Components\Select::make('formation_event_id')
                     ->required()
                     ->label('Evento Formazione')
-                    ->options(FormationEvent::all()->pluck('start_date', 'id')),
+                    ->options(FormationEvent::all()->pluck('name', 'id')),
                 Forms\Components\DatePicker::make('parsifal_enrolled_at')
                     ->label('Data Registrazione Parsifal'),
                 Forms\Components\TextInput::make('origin_id')
                     ->default('2')
                     ->disabled()
-                    ->hidden()
+                    ->hidden(),
+                Forms\Components\Select::make('student_status_id')
+                    ->required()
+                    ->searchable()
+                    ->options(StudentStatus::all()->pluck('name', 'id'))
+                    ->label('Stato Contatto'),
             ]);
     }
 
@@ -99,7 +105,10 @@ class StudentResource extends Resource
                     ->sortable()
                     ->toggleable()
                     ->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('parsifal_enrolled_at')->label('Iscritto')
+                Tables\Columns\TextColumn::make('status.name')->label('Stato Contatto')
+                    ->badge()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('parsifal_enrolled_at')->label('Iscritto in Parsifal il')
                     ->badge()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('formationEvent.course.name')->label('Corso in Programma')

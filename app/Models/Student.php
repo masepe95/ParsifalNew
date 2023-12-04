@@ -39,7 +39,7 @@ class Student extends Model
 
     public function status()
     {
-        return $this->hasOne(StudentStatus::class);
+        return $this->hasOne(StudentStatus::class, 'id', 'student_status_id');
     }
 
 
