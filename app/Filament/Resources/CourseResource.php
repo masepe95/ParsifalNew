@@ -57,7 +57,14 @@ class CourseResource extends Resource
                     ->required()
                     ->label('Descrizione'),
                 Forms\Components\FileUpload::make('banner')
-                    ->label('Locandina'),
+                    ->label('Locandina')
+            ->image()
+            ->imageEditor()
+//                    ->imageResizeMode('cover')
+//                    ->imageCropAspectRatio('16:9')
+//                    ->imageResizeTargetWidth('1920')
+//                    ->imageResizeTargetHeight('1080')
+                    ,
                 Forms\Components\TextInput::make('list_price')
                     ->required()
                     ->numeric()
@@ -81,6 +88,16 @@ class CourseResource extends Resource
                 Tables\Columns\TextColumn::make('code')->label('Codice')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('name')->label('Argomento')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('description')->label('Descrizione')->sortable()->searchable(),
+                Tables\Columns\ImageColumn::make('banner') // TODO: Remember to use php artisan storage:link
+                    ->getStateUsing(function (Course $record): string {
+                        return $record->banner??'';
+                    })->label('Locandina')
+                    ->extraImgAttributes([
+                        'height' => '50px'
+                    ])
+                    //->extraImgAttributes('')
+                    //->height('5')
+                ,
                 Tables\Columns\TextColumn::make('task_id')->label('Task')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('courseType.name')->label('Modalità')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('available_from')->label('Disponibile dal'),
