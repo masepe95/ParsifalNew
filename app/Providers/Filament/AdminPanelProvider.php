@@ -42,7 +42,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 //Widgets\FilamentInfoWidget::class,
-                // \App\Filament\Widgets\KpiWidgetClass::class, // spacca tutto anche se la classe c'è
+                \App\Filament\Widgets\KpiWidgetClass::class, // spacca tutto anche se la classe c'è
             ])
             ->middleware([
                 EncryptCookies::class,
