@@ -24,6 +24,8 @@ class Dashboard extends BaseDashboard
                 ->schema([
                     Section::make()
                         ->schema([
+                            //Select::make('businessCustomersOnly')
+                            //    ->boolean(),
                             Select::make('geographic')
                                 ->label('Sede (area geografica)')
                                 ->options(Branch::where('cfp_id', CFP::where('user_id', auth()->id())->first()->id)->pluck('name', 'id'))
