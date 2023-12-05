@@ -18,6 +18,8 @@ class CreateBranch extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         try {
+
+            // set access User Account
             $branchUser = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
@@ -25,7 +27,15 @@ class CreateBranch extends CreateRecord
                 'role_id' => BRANCH,
             ]);
 
+            // get the address GPS coords
+            $GPSCoords = getLatLong($data['address'] . ', '. $data['city']);
+            $data['gps_lat'] = $GPSCoords['latitude'];
+            $data['gps_lon'] = $GPSCoords['longitude'];
+
+            // protect passwords
             unset($data['password']);
+
+            // set ancestor CFP
             $data['user_id'] = $branchUser->id;
             $cfp = CFP::where('user_id', '=', auth()->id())->first();
             $data['cfp_id'] = $cfp->id;
