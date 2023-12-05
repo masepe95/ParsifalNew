@@ -88,7 +88,7 @@ class CourseResource extends Resource
                 Tables\Columns\TextColumn::make('code')->label('Codice')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('name')->label('Argomento')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('description')->label('Descrizione')->sortable()->searchable(),
-                Tables\Columns\ImageColumn::make('banner') // TODO: Remember to use php artisan storage:link
+                Tables\Columns\ImageColumn::make('banner') // TODO [EA:20231205]: Remember to use php artisan storage:link
                     ->getStateUsing(function (Course $record): string {
                         return $record->banner??'';
                     })->label('Locandina')

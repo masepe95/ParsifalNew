@@ -3,6 +3,9 @@
 // Some App Globals
 const CFP = 1;
 const BRANCH = 2;
+const NEWCOMER = 0; // Student or Internship prospect
+const ENROLLED = 5; // Student enrolled
+const STARTED = 7; // Internship started
 
 // get address LatLong GPS data from Google
 if (!function_exists('getLatLong')){

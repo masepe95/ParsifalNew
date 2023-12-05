@@ -22,6 +22,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StudentsExport;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Enums\ActionsPosition;
 
 class StudentResource extends Resource
 {
@@ -78,7 +79,9 @@ class StudentResource extends Resource
                     ->label('Evento Formazione')
                     ->options(FormationEvent::all()->pluck('name', 'id')),
                 Forms\Components\DatePicker::make('parsifal_enrolled_at')
-                    ->label('Data Registrazione Parsifal'),
+                    //->label('Data Registrazione Parsifal'),
+                    ->label('Data Variazione Dati')
+                    ->required(),
                 Forms\Components\TextInput::make('origin_id')
                     ->default('2')
                     ->disabled()
@@ -108,7 +111,9 @@ class StudentResource extends Resource
                 Tables\Columns\TextColumn::make('status.name')->label('Stato Contatto')
                     ->badge()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('parsifal_enrolled_at')->label('Iscritto in Parsifal il')
+                Tables\Columns\TextColumn::make('parsifal_enrolled_at')
+                    //->label('Data Iscrizione Parsifal')
+                    ->label('Data Variazione')
                     ->badge()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('formationEvent.course.name')->label('Corso in Programma')
@@ -120,14 +125,16 @@ class StudentResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                ->label(''),
                 Action::make('viewCurriculum')
                     ->icon('heroicon-m-eye')
-                    ->label('Curriculum')
+                    //->label('Curriculum')
+                    ->label('')
                     ->modalContent(fn (Student $record) => view('students.show-cv', ['collection' => $record]))
                     ->modalWidth('7xl')
                     ->modalSubmitAction(false),
-            ])
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 BulkAction::make('Enroll')
                     ->label('Iscrivi Ora')

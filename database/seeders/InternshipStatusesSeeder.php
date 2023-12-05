@@ -21,6 +21,10 @@ class InternshipStatusesSeeder extends Seeder
         //·	Tirocinio avviato
         //·	Tirocinio non avviato
         InternshipStatus::create([
+            'id'=>0,
+            'name' => 'Da contattare',
+        ]);
+        InternshipStatus::create([
             'id'=>1,
             'name' => 'Non risponde',
         ]);
@@ -42,11 +46,11 @@ class InternshipStatusesSeeder extends Seeder
         ]);
         InternshipStatus::create([
             'id'=>6,
-            'name' => 'Tirocinio avviato',
+            'name' => 'Tirocinio non avviato',
         ]);
         InternshipStatus::create([
             'id'=>7,
-            'name' => 'Tirocinio non avviato',
+            'name' => 'Tirocinio avviato',
         ]);
     }
 }

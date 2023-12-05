@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // TODO [EA:20231205]: Pensare se crearlo come bigInteger in modo da supportare gli insert con id = 0
             $table->foreignId('formation_event_id')->references('id')->on('formation_events'); // => valutare se tenere così
             //$table->bigInteger('formation_event_id'); // o così perchè anche se elimino la gerarchia dei CFP/BRANCHES/COURSES/FROMATION_EVENTS che mi lega il Candidato, poi me lo voglio conservare
             $table->string('email');

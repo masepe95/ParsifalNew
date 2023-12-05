@@ -47,7 +47,7 @@ class FormationEvent extends Model
         return $this->belongsTo(Branch::class);
     }
 
-    public function task() //TODO: ??
+    public function task() //TODO [EA:20231205]: ??
     {
         return $this->hasOne(Task::class);
     }

@@ -22,9 +22,11 @@ class ListStudents extends ListRecords
     {
         return [
             'In Gestione' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereNull('parsifal_enrolled_at')),
+                //->modifyQueryUsing(fn (Builder $query) => $query->whereNull('parsifal_enrolled_at')),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('student_status_id', '<', ENROLLED)),
             'Iscritti' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('parsifal_enrolled_at')),
+                //->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('parsifal_enrolled_at')),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('student_status_id', '>=', ENROLLED)),
         ];
     }
 }

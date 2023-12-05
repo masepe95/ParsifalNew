@@ -19,6 +19,10 @@ class StudentStatusesSeeder extends Seeder
         //·	Iscritto
         //·	Non iscritto
         StudentStatus::create([
+            'id'=>0,
+            'name' => 'Da contattare',
+        ]);
+        StudentStatus::create([
             'id'=>1,
             'name' => 'Non risponde',
         ]);
@@ -32,11 +36,11 @@ class StudentStatusesSeeder extends Seeder
         ]);
         StudentStatus::create([
             'id'=>4,
-            'name' => 'Iscritto',
+            'name' => 'Non iscritto',
         ]);
         StudentStatus::create([
             'id'=>5,
-            'name' => 'Non iscritto',
+            'name' => 'Iscritto',
         ]);
     }
 }

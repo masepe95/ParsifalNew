@@ -12,6 +12,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -71,7 +72,9 @@ class InternshipResource extends Resource
                 Forms\Components\TextInput::make('phone')
                     ->label('Telefono'),
                 Forms\Components\DatePicker::make('parsifal_enrolled_at')
-                    ->label('Data Registrazione Parsifal'),
+                    //->label('Data Registrazione Parsifal'),
+                    ->label('Data Variazione Dati')
+                    ->required(),
                 Forms\Components\Select::make('internship_status_id')
                     ->required()
                     ->searchable()
@@ -102,28 +105,30 @@ class InternshipResource extends Resource
                     ->badge()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('parsifal_enrolled_at')
-                    ->label('Data Attivazione Tirocinio')
+                    //->label('Data Attivazione Tirocinio')
+                    ->label('Data Variazione')
                     ->badge(),
                 //Tables\Columns\TextColumn::make('updated_at')
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-
-            ])
-            ->bulkActions([
+                ])
+                ->filters([
+                    //
+                ])
+                ->actions([
+                    Tables\Actions\EditAction::make()
+                    ->label(''),
+                ], position: ActionsPosition::BeforeColumns)
+                ->bulkActions([
 
                 BulkAction::make('Enroll')
                     ->label('Iscrivi Ora')
                     ->visible(function () {
-                        return auth()->user()->role_id != 1;
+                        return auth()->user()->role_id != CFP;
                     })
                     ->action(function (Collection $records) {
                         $records->each(function (Internship $internship) {
                             $internship->update([
                                 'parsifal_enrolled_at' => Carbon::now(),
+                                'internship_status_id' => ENROLLED,
                             ]);
                         });
                     }),
