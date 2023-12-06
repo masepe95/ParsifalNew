@@ -36,13 +36,13 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 //Pages\Dashboard::class,
-                \App\Filament\Pages\Dashboard::class, // giusta ma non serve
+                \App\Filament\Pages\Dashboard::class, // FIXME [EA20231205] => Done: giusta ma non serve
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
+                //Widgets\AccountWidget::class,
                 //Widgets\FilamentInfoWidget::class,
-                \App\Filament\Widgets\KpiWidgetClass::class, // spacca tutto anche se la classe c'è
+                //\App\Filament\Widgets\KpiWidgetClass::class, // FIXME [EA20231205] => Done:  spacca tutto anche se la classe c'è ; ora a posto, ma lo nascondiamo
             ])
             ->middleware([
                 EncryptCookies::class,
