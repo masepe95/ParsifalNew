@@ -9,6 +9,7 @@ use Filament\Tables\Table;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 use mysql_xdevapi\ColumnResult;
 
 class KpiTable extends BaseWidget
@@ -17,7 +18,7 @@ class KpiTable extends BaseWidget
 
     protected static ?int $sort = 1;
 
-    protected int | string | array $columnSpan = 'full';
+    protected int | string | array $columnSpan = 'half';
 
     public function table(Table $table): Table
     {
@@ -32,12 +33,14 @@ class KpiTable extends BaseWidget
         $branch_id = $this->filters['geographic'] ?? 0;
 
         return $table
-        ->query(
-            // ...
+            ->query(
+                //(fn (Builder $query) => $query->where('created_at', '', '')
 
             // TODO [EA20231206]: si deve tirar fuori una *query*
             // con questo funziona ma non è giusto:
-            CamelotCandidateSearch::query()
+                CamelotCandidateSearch::query()
+                    ->join('parsifal_db_stage.branches as pb','pb.id', '=', 'pb.id')
+                    ->limit(5)
 
             // Questo è il SQL giusto, ma non funziona (errore Filament\Tables\Table::query(): Argument #1 ($query) must be of type Illuminate\Database\Eloquent\Builder|Closure|null, Illuminate\Database\Eloquent\Collection given, called in C:\inetpub\wwwroot\parsifal_webapp_stage\app\Filament\Widgets\KpiTable.php on line 40 {"userId":2,"exception":"[object] (TypeError(code: 0): Filament\\Tables\\Table::query(): Argument #1 ($query) must be of type Illuminate\\Database\\Eloquent\\Builder|Closure|null, Illuminate\\Database\\Eloquent\\Collection given, called in C:\\inetpub\\wwwroot\\parsifal_webapp_stage\\app\\Filament\\Widgets\\KpiTable.php on line 40 at C:\\inetpub\\wwwroot\\parsifal_webapp_stage\\vendor\\filament\\tables\\src\\Table\\Concerns\\HasQuery.php:28):
 //            DB::raw("
@@ -56,11 +59,10 @@ class KpiTable extends BaseWidget
 //                order by cnt desc
 //                limit 5
 //            ")
-
         )
         ->columns([
             // ...
-            //Tables\Columns\TextColumn::make('index')->label('Posizione')->rowIndex(),
+            Tables\Columns\TextColumn::make('index')->label('Posizione')->rowIndex(),
             Tables\Columns\TextColumn::make('id')->label('Id'),
             //Tables\Columns\TextColumn::make('name')->label('Mansione'),
             //Tables\Columns\TextColumn::make('count')->label('Occorrenze'),
