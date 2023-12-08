@@ -64,7 +64,7 @@ class KpiTable extends BaseWidget
             // ...
             Tables\Columns\TextColumn::make('index')->label('Posizione')->rowIndex(),
             Tables\Columns\TextColumn::make('id')->label('Id'),
-            //Tables\Columns\TextColumn::make('name')->label('Mansione'),
+            Tables\Columns\TextColumn::make('name')->label('Mansione'),
             //Tables\Columns\TextColumn::make('count')->label('Occorrenze'),
         ]);
     }
