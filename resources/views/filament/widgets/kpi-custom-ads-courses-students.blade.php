@@ -1,0 +1,102 @@
+@php
+
+    use Illuminate\Support\Facades\DB;
+    use App\Models\Branch;
+    use App\Models\Internship;
+    use App\Models\CFP;
+
+    $startDate = filled($this->filters['startDate'] ?? null) ?
+        Carbon::parse($this->filters['startDate']) :
+        '2023-01-01';
+
+    $endDate = filled($this->filters['endDate'] ?? null) ?
+        Carbon::parse($this->filters['endDate']) :
+        now();
+
+    $branch_id = $this->filters['geographic'] ?? 0;
+
+//    $results = DB::select("select * from branches where id=$branch_id limit 4");
+
+     if (auth()->user()->role_id == CFP) {
+        $results = Internship::query()->whereHas('branch', function ($query) {
+            $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
+        });
+     }
+     else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
+        $results = \App\Models\Internship::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
+     }
+
+@endphp
+<x-filament-widgets::widget>
+    <style>
+        .modern-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            min-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            border-radius: 10px; /* Rounded corners */
+            overflow: hidden; /* Ensures the inner elements respect the border radius */
+        }
+
+        .modern-table thead tr {
+            background-color: #009879;
+            color: white;
+            text-align: left;
+        }
+
+        .modern-table th,
+        .modern-table td {
+            padding: 12px 15px;
+        }
+
+        .modern-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .modern-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .modern-table tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+
+        .modern-table tbody tr.active-row {
+            font-weight: bold;
+            color: #009879;
+        }
+    </style>
+    <x-filament::section>
+        <h1>ADS Corsi per la sede {{ Branch::find($branch_id)->name }}:</h1>
+        <br/>
+        <table class="modern-table">
+            <thead>
+            <tr>
+                <th>Pos.</th>
+                <th>Occorrenze<br/>(su {{-- $total_weighted_dream_jobs[0]->count --}} tot.)</th>
+                {{-- <th>Percentuale</th> --}}
+            </tr>
+            </thead>
+            <tbody>
+            @php $rownum = 1; @endphp
+            @foreach ($results as $result)
+                <tr>
+                    <td style="text-align: left">{{ $rownum }}</td>
+                    <td style="text-align: center">{{ $result->count }}</td>
+                    {{--
+                    @if($total_weighted_dream_jobs[0]->count != 0)
+                        <td style="text-align: right">{{ number_format($result->count / $total_weighted_dream_jobs[0]->count * 100,2) }}%</td>
+                    @else
+                        <td style="text-align: right">n.d.</td>
+                    @endif
+                    --}}
+                </tr>
+                @php $rownum++; @endphp
+            @endforeach
+            </tbody>
+        </table>
+    </x-filament::section>
+</x-filament-widgets::widget>
