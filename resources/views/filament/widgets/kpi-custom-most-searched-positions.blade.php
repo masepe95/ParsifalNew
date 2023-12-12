@@ -5,7 +5,7 @@
 
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :
-        null;
+        '2023-01-01';
 
     $endDate = filled($this->filters['endDate'] ?? null) ?
         Carbon::parse($this->filters['endDate']) :
@@ -16,22 +16,36 @@
 //    $results = DB::select("select * from branches where id=$branch_id limit 4");
 
     $results = DB::select("
-                select
-                    #DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km'),
-                    ccrc.task_id,
-                    ct.name as name,
-                    count(ccrc.task_id) as count
-                from camelot_db_stage.company_research_candidates as ccrc
-                inner join parsifal_db_stage.branches as pb
-                inner join camelot_db_stage.tasks as ct on ccrc.task_id = ct.id
-                where 1=1
-                and DISTANCE(ccrc.gps_lat,ccrc.gps_lon,pb.gps_lat,pb.gps_lon,'km') < 250
-                and pb.id = $branch_id # ===> Branch Id
-                and ccrc.created_at between '$startDate' and '$endDate' # ===> Time range
-                group by ccrc.task_id
-                order by count desc
-                limit 5
-            ")
+        select
+            #DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km'),
+            ccrc.task_id,
+            ct.name as name,
+            count(ccrc.task_id) as count
+        from camelot_db_stage.company_research_candidates as ccrc
+        inner join parsifal_db_stage.branches as pb
+        inner join camelot_db_stage.tasks as ct on ccrc.task_id = ct.id
+        where 1=1
+        and DISTANCE(ccrc.gps_lat,ccrc.gps_lon,pb.gps_lat,pb.gps_lon,'km') < 250
+        and pb.id = $branch_id # ===> Branch Id
+        and ccrc.created_at between '$startDate' and '$endDate' # ===> Time range
+        group by ccrc.task_id
+        order by count desc
+        limit 5
+    ");
+
+    $total_weighted_positions = DB::select("
+        select count(*) as count
+        from camelot_db_stage.company_research_candidates as ccrc
+        inner join parsifal_db_stage.branches as pb
+        where DISTANCE(ccrc.gps_lat,ccrc.gps_lon,pb.gps_lat,pb.gps_lon,'km') < 250
+        and pb.id = $branch_id # ===> Branch Id
+        and ccrc.created_at between '$startDate' and '$endDate' # ===> Time range
+    ");
+
+    $total_positions = DB::select("
+        select count(*) as count
+        from camelot_db_stage.company_research_candidates as ccrc
+    ");
 
 @endphp
 <x-filament-widgets::widget>
@@ -85,16 +99,26 @@
         <table class="modern-table">
             <thead>
             <tr>
+                <th>Pos.</th>
                 <th>Mansione</th>
-                <th>Occorrenze</th>
+                <th>Occorrenze<br/>(su {{ $total_weighted_positions[0]->count}} tot.)</th>
+                <th>Percentuale</th>
             </tr>
             </thead>
             <tbody>
+            @php $rownum = 1; @endphp
             @foreach ($results as $result)
                 <tr>
+                    <td style="text-align: left">{{ $rownum }}</td>
                     <td style="text-align: left">{{ $result->name }}</td>
-                    <td style="text-align: right">{{ $result->count }}</td>
+                    <td style="text-align: center">{{ $result->count }}</td>
+                    @if($total_weighted_positions[0]->count != 0)
+                        <td style="text-align: right">{{ number_format($result->count / $total_weighted_positions[0]->count * 100,2) }}%</td>
+                    @else
+                        <td style="text-align: right">n.d.</td>
+                    @endif
                 </tr>
+                @php $rownum++; @endphp
             @endforeach
             </tbody>
         </table>

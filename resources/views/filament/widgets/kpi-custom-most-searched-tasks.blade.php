@@ -5,7 +5,7 @@
 
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :
-        null;
+        '2023-01-01';
 
     $endDate = filled($this->filters['endDate'] ?? null) ?
         Carbon::parse($this->filters['endDate']) :
@@ -16,21 +16,35 @@
 //    $results = DB::select("select * from branches where id=$branch_id limit 4");
 
     $results = DB::select("
-                select
-                    #DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km'),
-                    cdj.task_id,
-                    ct.name as name,
-                    count(cdj.task_id) as count
-                from camelot_db.dream_jobs as cdj
-                inner join camelot_db.tasks as ct on cdj.task_id = ct.id
-                inner join parsifal_db_stage.branches as pb
-                where DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km') < 50
-                and pb.id = $branch_id # ===> Branch Id
-                and cdj.created_at between '$startDate' and '$endDate' # ===> Time range
-                group by cdj.task_id
-                order by count desc
-                limit 5
-            ")
+        select
+            #DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km'),
+            cdj.task_id,
+            ct.name as name,
+            count(cdj.task_id) as count
+        from camelot_db.dream_jobs as cdj
+        inner join camelot_db.tasks as ct on cdj.task_id = ct.id
+        inner join parsifal_db_stage.branches as pb
+        where DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km') < 50
+        and pb.id = $branch_id # ===> Branch Id
+        and cdj.created_at between '$startDate' and '$endDate' # ===> Time range
+        group by cdj.task_id
+        order by count desc
+        limit 5
+    ");
+
+    $total_weighted_dream_jobs = DB::select("
+        select count(*) as count
+        from camelot_db.dream_jobs as cdj
+        inner join parsifal_db_stage.branches as pb
+        where DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km') < 50
+        and pb.id = $branch_id # ===> Branch Id
+        and cdj.created_at between '$startDate' and '$endDate' # ===> Time range
+    ");
+
+    $total_dream_jobs = DB::select("
+        select count(*) as count
+        from camelot_db.dream_jobs
+    ");
 
 @endphp
 <x-filament-widgets::widget>
@@ -81,16 +95,26 @@
         <table class="modern-table">
             <thead>
             <tr>
+                <th>Pos.</th>
                 <th>Mansione</th>
-                <th>Occorrenze</th>
+                <th>Occorrenze<br/>(su {{ $total_weighted_dream_jobs[0]->count}} tot.)</th>
+                <th>Percentuale</th>
             </tr>
             </thead>
             <tbody>
+            @php $rownum = 1; @endphp
             @foreach ($results as $result)
                 <tr>
+                    <td style="text-align: left">{{ $rownum }}</td>
                     <td style="text-align: left">{{ $result->name }}</td>
-                    <td style="text-align: right">{{ $result->count }}</td>
+                    <td style="text-align: center">{{ $result->count }}</td>
+                    @if($total_weighted_dream_jobs[0]->count != 0)
+                        <td style="text-align: right">{{ number_format($result->count / $total_weighted_dream_jobs[0]->count * 100,2) }}%</td>
+                    @else
+                        <td style="text-align: right">n.d.</td>
+                    @endif
                 </tr>
+                @php $rownum++; @endphp
             @endforeach
             </tbody>
         </table>
