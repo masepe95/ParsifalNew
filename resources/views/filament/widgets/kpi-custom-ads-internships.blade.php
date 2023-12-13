@@ -4,6 +4,7 @@
     use App\Models\Branch;
     use App\Models\Internship;
     use App\Models\CFP;
+    use Carbon\Carbon;
 
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :
@@ -30,7 +31,7 @@
         })->get();
      }
      else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
-        $results = Internship::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id )->get();
+        $results = Internship::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id )->whereBetween('created_at',[$startDate,$endDate])->get();
         $total = Internship::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id )->get();
      }
 /**/

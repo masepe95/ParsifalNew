@@ -2,8 +2,9 @@
 
     use Illuminate\Support\Facades\DB;
     use App\Models\Branch;
-    use App\Models\Internship;
+    use App\Models\Student;
     use App\Models\CFP;
+    use Carbon\Carbon;
 
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :
@@ -18,12 +19,19 @@
 //    $results = DB::select("select * from branches where id=$branch_id limit 4");
 
      if (auth()->user()->role_id == CFP) {
-        $results = Internship::query()->whereHas('branch', function ($query) {
-            $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
-        });
+         $branch = Branch::find($branch_id);
+//         dd($branch);
+         $results = $branch->students->whereBetween('created_at',[$startDate,$endDate]);
+         $total = $branch->students;
+//         dd($results);
      }
      else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
-        $results = \App\Models\Internship::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
+        //$results = \App\Models\Student::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
+         $branch = Branch::where('user_id',auth()->id())->first();
+//         dd($branch);
+         $results = $branch->students->whereBetween('created_at',[$startDate,$endDate]);
+         $total = $branch->students;
+//         dd($results);
      }
 
 @endphp
@@ -70,33 +78,27 @@
         }
     </style>
     <x-filament::section>
+        {{----}}
         <h1>ADS Corsi per la sede {{ Branch::find($branch_id)->name }}:</h1>
         <br/>
         <table class="modern-table">
             <thead>
             <tr>
-                <th>Pos.</th>
-                <th>Occorrenze<br/>(su {{-- $total_weighted_dream_jobs[0]->count --}} tot.)</th>
-                {{-- <th>Percentuale</th> --}}
+                <th>Occorrenze</th>
+                <th>Percentuale (su {{ $total->count() }} tot.)</th>
             </tr>
             </thead>
             <tbody>
-            @php $rownum = 1; @endphp
-            @foreach ($results as $result)
-                <tr>
-                    <td style="text-align: left">{{ $rownum }}</td>
-                    <td style="text-align: center">{{ $result->count }}</td>
-                    {{--
-                    @if($total_weighted_dream_jobs[0]->count != 0)
-                        <td style="text-align: right">{{ number_format($result->count / $total_weighted_dream_jobs[0]->count * 100,2) }}%</td>
-                    @else
-                        <td style="text-align: right">n.d.</td>
-                    @endif
-                    --}}
-                </tr>
-                @php $rownum++; @endphp
-            @endforeach
+            <tr>
+                <td style="text-align: center">{{ $results->count() }}</td>
+                @if($total->count() != 0)
+                    <td style="text-align: right">{{ number_format($results->count() / $total->count() * 100,2) }}%</td>
+                @else
+                    <td style="text-align: right">n.d.</td>
+                @endif
+            </tr>
             </tbody>
         </table>
+        {{----}}
     </x-filament::section>
 </x-filament-widgets::widget>

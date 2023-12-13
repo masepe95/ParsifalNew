@@ -2,6 +2,7 @@
 
     use Illuminate\Support\Facades\DB;
     use App\Models\Branch;
+    use Carbon\Carbon;
 
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :

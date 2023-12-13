@@ -57,4 +57,9 @@ class Branch extends Model
         return $this->hasMany(Internship::class);
     }
 
+    public function students()
+    {
+        return $this->hasManyThrough(Student::class, FormationEvent::class);
+    }
+
 }

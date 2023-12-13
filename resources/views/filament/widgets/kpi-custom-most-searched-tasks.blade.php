@@ -2,6 +2,7 @@
 
     use Illuminate\Support\Facades\DB;
     use App\Models\Branch;
+    use Carbon\Carbon;
 
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :
@@ -90,7 +91,7 @@
         }
     </style>
     <x-filament::section>
-        <h1>Mansioni più ricercate dalle Aziende nella zona della sede {{ Branch::find($branch_id)->name }}:</h1>
+        <h1>Mansioni più ricercate dai Candidati nella zona della sede {{ Branch::find($branch_id)->name }}:</h1>
         <br/>
         <table class="modern-table">
             <thead>
