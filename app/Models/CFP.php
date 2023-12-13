@@ -52,6 +52,17 @@ class CFP extends Model
         return $this->hasMany(Course::class);
     }
 
+    public function formationEvents()
+    {
+        return $this->hasManyThrough(
+            FormationEvent::class,
+            Branch::class,
+            'cfp_id', // foreign key on formation_events table
+            'branch_id', // foreign key on branches table
+            'id', // local key on c_f_p_s table (main model table)
+            'id'); // local key on branches table (intermediate model table)
+    }
+
     public function cfpType()
     {
         return $this->hasOne(CFPType::class);
