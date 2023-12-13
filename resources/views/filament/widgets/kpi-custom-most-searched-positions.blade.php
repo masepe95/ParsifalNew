@@ -96,7 +96,6 @@
         {{-- Widget content --}}
         <!--h1 style="text-align: center; font-weight: 900; font-size: 35px">Sedi:</h1-->
         <h1>Mansioni più ricercate dalle Aziende nella zona della sede {{Branch::find($branch_id)->name}}:</h1>
-        <br/>
         <table class="modern-table">
             <thead>
             <tr>
@@ -123,6 +122,5 @@
             @endforeach
             </tbody>
         </table>
-
     </x-filament::section>
 </x-filament-widgets::widget>

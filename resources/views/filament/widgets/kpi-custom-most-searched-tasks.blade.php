@@ -92,7 +92,6 @@
     </style>
     <x-filament::section>
         <h1>Mansioni più ricercate dai Candidati nella zona della sede {{ Branch::find($branch_id)->name }}:</h1>
-        <br/>
         <table class="modern-table">
             <thead>
             <tr>

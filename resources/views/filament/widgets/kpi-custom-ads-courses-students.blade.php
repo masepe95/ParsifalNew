@@ -3,6 +3,7 @@
     use Illuminate\Support\Facades\DB;
     use App\Models\Branch;
     use App\Models\Student;
+    use App\Models\FormationEvent;
     use App\Models\CFP;
     use Carbon\Carbon;
 
@@ -19,11 +20,16 @@
 //    $results = DB::select("select * from branches where id=$branch_id limit 4");
 
      if (auth()->user()->role_id == CFP) {
-         $branch = Branch::find($branch_id);
-//         dd($branch);
-         $results = $branch->students->whereBetween('created_at',[$startDate,$endDate]);
-         $total = $branch->students;
+        $cfp = CFP::where('user_id',auth()->id())->first();
+        $branch = Branch::find($branch_id);
+        $branches = $cfp->branches;
+//         dd($branches);
+        $results = $branch->students->whereBetween('created_at',[$startDate,$endDate]);
 //         dd($results);
+        $formation_events = FormationEvent::whereIn( 'branch_id', $branches->pluck('id') );
+//        dd($formation_events);
+        $total = Student::whereIn( 'formation_event_id', ( $formation_events->pluck('id') ) )->whereBetween('created_at',[$startDate,$endDate])->get();
+//        dd($total);
      }
      else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
         //$results = \App\Models\Student::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
@@ -80,12 +86,11 @@
     <x-filament::section>
         {{----}}
         <h1>ADS Corsi per la sede {{ Branch::find($branch_id)->name }}:</h1>
-        <br/>
         <table class="modern-table">
             <thead>
             <tr>
                 <th>Occorrenze</th>
-                <th>Percentuale (su {{ $total->count() }} tot.)</th>
+                <th style="text-align: right">Percentuale (su {{ $total->count() }} tot.)</th>
             </tr>
             </thead>
             <tbody>

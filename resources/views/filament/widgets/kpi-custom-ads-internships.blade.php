@@ -82,7 +82,6 @@
     </style>
     <x-filament::section>
         <h1>ADS Tirocini/Stage per la sede {{ Branch::find($branch_id)->name }}:</h1>
-        <br/>
         <table class="modern-table">
             <thead>
             <tr>

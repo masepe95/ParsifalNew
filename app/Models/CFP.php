@@ -44,7 +44,7 @@ class CFP extends Model
 
     public function branches()
     {
-        return $this->hasMany(Branch::class);
+        return $this->hasMany(Branch::class, 'cfp_id', 'id');
     }
 
     public function courses()
