@@ -14,7 +14,10 @@
 
     $branch_id = $this->filters['geographic'] ?? 0;
 
-//    $results = DB::select("select * from branches where id=$branch_id limit 4");
+    if (auth()->user()->role_id == BRANCH) {
+        $branch = Branch::where('user_id',auth()->id())->first();
+        $branch_id = $branch->id;
+    }
 
     $results = DB::select("
         select

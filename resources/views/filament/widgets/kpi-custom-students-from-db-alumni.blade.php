@@ -7,6 +7,8 @@
     use App\Models\CFP;
     use Carbon\Carbon;
 
+    xdebug_break();
+
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :
         '2023-01-01';
@@ -33,10 +35,10 @@
     else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
         //$results = \App\Models\Student::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
          $branch = Branch::where('user_id',auth()->id())->first();
-        //         dd($branch);
+//         dd($branch);
          $results = $branch->students->whereBetween('created_at',[$startDate,$endDate]);
          $total = $branch->students;
-        //         dd($results);
+//         dd($results);
     }
 
 @endphp
@@ -84,7 +86,7 @@
     </style>
     <x-filament::section>
         {{----}}
-        <h1>ADS Corsi per la sede {{ Branch::find($branch_id)->name }}:</h1>
+        <h1>Candidati segnalati in Camelot dal DB Alunni per la sede {{ Branch::find($branch_id)->name }}:</h1>
         <table class="modern-table">
             <thead>
             <tr>

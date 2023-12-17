@@ -16,10 +16,12 @@
 
     $branch_id = $this->filters['geographic'] ?? 0;
 
-    //$results = DB::select("select * from branches where id=$branch_id limit 4");
-    //$results = Internship::whereIn( 'branch_id', Branch::where('cfp_id', CFP::where('user_id', auth()->id())->first()->id)->pluck('id') )->get();
-/**/
-     if (auth()->user()->role_id == CFP) {
+    if (auth()->user()->role_id == BRANCH) {
+        $branch = Branch::where('user_id',auth()->id())->first();
+        $branch_id = $branch->id;
+    }
+
+    if (auth()->user()->role_id == CFP) {
         $results = Internship::query()->whereHas('branch', function ($query) {
             $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
         })
@@ -29,13 +31,11 @@
         $total = Internship::query()->whereHas('branch', function ($query) {
             $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
         })->get();
-     }
-     else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
+    }
+    else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
         $results = Internship::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id )->whereBetween('created_at',[$startDate,$endDate])->get();
         $total = Internship::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id )->get();
-     }
-/**/
-    //dd($results);
+    }
 
 @endphp
 <x-filament-widgets::widget>

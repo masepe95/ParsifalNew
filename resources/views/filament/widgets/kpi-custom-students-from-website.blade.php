@@ -32,11 +32,11 @@
     }
     else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
         //$results = \App\Models\Student::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
-         $branch = Branch::where('user_id',auth()->id())->first();
-        //         dd($branch);
-         $results = $branch->students->whereBetween('created_at',[$startDate,$endDate]);
-         $total = $branch->students;
-        //         dd($results);
+        $branch = Branch::where('user_id',auth()->id())->first();
+//         dd($branch);
+        $results = $branch->students->whereBetween('created_at',[$startDate,$endDate]);
+        $total = $branch->students;
+//         dd($results);
     }
 
 @endphp
@@ -84,7 +84,7 @@
     </style>
     <x-filament::section>
         {{----}}
-        <h1>ADS Corsi per la sede {{ Branch::find($branch_id)->name }}:</h1>
+        <h1>Candidati segnalati in Camelot dal Web site per la sede {{ Branch::find($branch_id)->name }}:</h1>
         <table class="modern-table">
             <thead>
             <tr>

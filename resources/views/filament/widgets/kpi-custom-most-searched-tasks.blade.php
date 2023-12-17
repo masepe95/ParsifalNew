@@ -4,6 +4,8 @@
     use App\Models\Branch;
     use Carbon\Carbon;
 
+    xdebug_break();
+
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :
         '2023-01-01';
@@ -14,33 +16,36 @@
 
     $branch_id = $this->filters['geographic'] ?? 0;
 
-//    $results = DB::select("select * from branches where id=$branch_id limit 4");
+    if (auth()->user()->role_id == BRANCH) {
+        $branch = Branch::where('user_id',auth()->id())->first();
+        $branch_id = $branch->id;
+    }
 
     $results = DB::select("
-        select
-            #DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km'),
-            cdj.task_id,
-            ct.name as name,
-            count(cdj.task_id) as count
-        from camelot_db.dream_jobs as cdj
-        inner join camelot_db.tasks as ct on cdj.task_id = ct.id
-        inner join parsifal_db_stage.branches as pb
-        where DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km') < 50
-        and pb.id = $branch_id # ===> Branch Id
-        and cdj.created_at between '$startDate' and '$endDate' # ===> Time range
-        group by cdj.task_id
-        order by count desc
-        limit 5
-    ");
+            select
+                #DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km'),
+                cdj.task_id,
+                ct.name as name,
+                count(cdj.task_id) as count
+            from camelot_db.dream_jobs as cdj
+            inner join camelot_db.tasks as ct on cdj.task_id = ct.id
+            inner join parsifal_db_stage.branches as pb
+            where DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km') < 50
+            and pb.id = $branch_id # ===> Branch Id
+            and cdj.created_at between '$startDate' and '$endDate' # ===> Time range
+            group by cdj.task_id
+            order by count desc
+            limit 5
+        ");
 
     $total_weighted_dream_jobs = DB::select("
-        select count(*) as count
-        from camelot_db.dream_jobs as cdj
-        inner join parsifal_db_stage.branches as pb
-        where DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km') < 50
-        and pb.id = $branch_id # ===> Branch Id
-        and cdj.created_at between '$startDate' and '$endDate' # ===> Time range
-    ");
+            select count(*) as count
+            from camelot_db.dream_jobs as cdj
+            inner join parsifal_db_stage.branches as pb
+            where DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km') < 50
+            and pb.id = $branch_id # ===> Branch Id
+            and cdj.created_at between '$startDate' and '$endDate' # ===> Time range
+        ");
 
     $total_dream_jobs = DB::select("
         select count(*) as count

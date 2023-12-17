@@ -2,8 +2,6 @@
 
 namespace App\Filament\Widgets;
 
-use Carbon\Carbon;
-use Filament\Tables\Table;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\Widget;
 
