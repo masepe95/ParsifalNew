@@ -17,11 +17,11 @@ class Student extends Model
     protected $fillable = [
         'id',
         'formation_event_id',
-        'camelot_candidate_id',
         'email',
         'phone',
         'parsifal_enrolled_at',
-        'status_id',
+        'student_status_id',
+        'camelot_candidate_id',
         'camelot_preregistration_email_sent_at',
         'origin_id',
     ];
