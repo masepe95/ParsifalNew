@@ -22,6 +22,28 @@
     }
 
     if (auth()->user()->role_id == CFP) {
+        $total = Internship::query()->whereHas('branch', function ($query) {
+            $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
+        })->get();
+        if($branch_id != 0){
+            $results = Internship::query()->whereHas('branch', function ($query) {
+                $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
+            })
+            ->where('branch_id',$branch_id)
+            ->whereBetween('created_at',[$startDate,$endDate])
+            ->get();
+        }
+        else{
+            $results = $total;
+        }
+    }
+    else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
+        $results = Internship::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id )->whereBetween('created_at',[$startDate,$endDate])->get();
+        $total = Internship::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id )->get();
+    }
+
+    /*
+    if (auth()->user()->role_id == CFP) {
         $results = Internship::query()->whereHas('branch', function ($query) {
             $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
         })
@@ -36,6 +58,7 @@
         $results = Internship::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id )->whereBetween('created_at',[$startDate,$endDate])->get();
         $total = Internship::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id )->get();
     }
+    */
 
 @endphp
 <x-filament-widgets::widget>
@@ -81,7 +104,7 @@
         }
     </style>
     <x-filament::section>
-        <h1>ADS Tirocini/Stage per la sede {{ Branch::find($branch_id)->name }}:</h1>
+        <h1>ADS Tirocini/Stage per la sede {{ Branch::find($branch_id)->name ?? '' }}:</h1>
         <table class="modern-table">
             <thead>
             <tr>

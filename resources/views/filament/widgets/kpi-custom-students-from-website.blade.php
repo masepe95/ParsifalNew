@@ -24,20 +24,17 @@
 
     if (auth()->user()->role_id == CFP) {
         $cfp = CFP::where('user_id',auth()->id())->first();
-        $branch = Branch::find($branch_id);
-        $branches = $cfp->branches;
-        $formation_events = $cfp->formationEvents;
-        $results = $branch->students->whereBetween('created_at',[$startDate,$endDate]);
-        $total = Student::whereIn( 'formation_event_id', ( $formation_events->pluck('id') ) )->whereBetween('created_at',[$startDate,$endDate])->get();
+        $results = \App\Models\CamelotCandidate::where('lead_source','like', "%{$cfp->name}%")->whereBetween('created_at',[$startDate,$endDate]);
     }
-    else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
-        //$results = \App\Models\Student::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
+    else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente        $cfp = CFP::where('user_id',auth()->id())->first();
         $branch = Branch::where('user_id',auth()->id())->first();
 //         dd($branch);
-        $results = $branch->students->whereBetween('created_at',[$startDate,$endDate]);
-        $total = $branch->students;
+        $cfp = $branch->cfp;
+        $results = \App\Models\CamelotCandidate::where('lead_source','like', "%{$cfp->name}%")->whereBetween('created_at',[$startDate,$endDate]);
 //         dd($results);
     }
+    $total = \App\Models\CamelotCandidate::all()->whereBetween('created_at',[$startDate,$endDate]);
+
 
 @endphp
 <x-filament-widgets::widget>
@@ -83,8 +80,8 @@
         }
     </style>
     <x-filament::section>
-        {{----}}
-        <h1>Candidati segnalati in Camelot dal Web site per la sede {{ Branch::find($branch_id)->name }}:</h1>
+        {{--        <h1>Candidati segnalati in Camelot dal Web site per la sede {{ Branch::find($branch_id)->name ?? '' }}:</h1>--}}
+        <h1>Candidati segnalati in Camelot dal Web site del CFP :</h1>
         <table class="modern-table">
             <thead>
             <tr>

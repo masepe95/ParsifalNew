@@ -117,7 +117,16 @@ class FormationEventResource extends Resource
                 Tables\Columns\TextColumn::make('branch.name')->label('Sede')->searchable(isIndividual: true)->visible(fn (): bool => auth()->user()->role_id == CFP),
                 Tables\Columns\TextColumn::make('course.name')->label('Nome Corso')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('name')->label('Nome Evento')->sortable()->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('course.list_price')->label('Prezzo')->sortable(),
+                Tables\Columns\ImageColumn::make('banner') // TODO [EA:20231205]: Remember to use php artisan storage:link
+                ->getStateUsing(function (FormationEvent $record): string {
+                    return $record->banner??'';
+                })->label('Locandina')
+                    ->extraImgAttributes([
+                        'height' => '50px'
+                    ])
+                //->extraImgAttributes('')
+                //->height('5')
+                ,                Tables\Columns\TextColumn::make('course.list_price')->label('Prezzo')->sortable(),
                 Tables\Columns\TextColumn::make('start_date')->label('Data inizio'),
                 Tables\Columns\TextColumn::make('end_date')->label('Data fine'),
             ])

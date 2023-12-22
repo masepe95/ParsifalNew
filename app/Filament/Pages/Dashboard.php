@@ -44,7 +44,22 @@ class Dashboard extends BaseDashboard
                 ]);
         }
         else{
-            return $form;
+            return $form
+                ->schema([
+                    Section::make()
+                        ->schema([
+                            DatePicker::make('startDate')
+                                ->label('Periodo - dal:')
+                                ->maxDate(fn(Get $get) => $get('endDate') ?: now())
+                            ,
+                            DatePicker::make('endDate')
+                                ->label('Periodo - al:')
+                                ->minDate(fn(Get $get) => $get('startDate') ?: now())
+                                ->maxDate(now())
+                            ,
+                        ])
+                        ->columns(3),
+                ]);
         }
     }
 }

@@ -58,8 +58,8 @@ class CourseResource extends Resource
                     ->label('Descrizione'),
                 Forms\Components\FileUpload::make('banner')
                     ->label('Locandina')
-            ->image()
-            ->imageEditor()
+                    ->image()
+                    ->imageEditor()
 //                    ->imageResizeMode('cover')
 //                    ->imageCropAspectRatio('16:9')
 //                    ->imageResizeTargetWidth('1920')

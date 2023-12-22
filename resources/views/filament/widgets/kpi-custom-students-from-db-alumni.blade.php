@@ -19,6 +19,11 @@
 
     $branch_id = $this->filters['geographic'] ?? 0;
 
+    /*
+     *  Questa KPI deve mostrare il numero di Candidati Camelot inviati dal DB alunni della specifica sede,
+     *  rapportato al numero totale di Candidati Camelot, sul periodo
+     */
+
     if (auth()->user()->role_id == BRANCH) {
         $branch = Branch::where('user_id',auth()->id())->first();
         $branch_id = $branch->id;
@@ -26,11 +31,17 @@
 
     if (auth()->user()->role_id == CFP) {
         $cfp = CFP::where('user_id',auth()->id())->first();
-        $branch = Branch::find($branch_id);
-        $branches = $cfp->branches;
         $formation_events = $cfp->formationEvents;
-        $results = $branch->students->whereBetween('created_at',[$startDate,$endDate]);
-        $total = Student::whereIn( 'formation_event_id', ( $formation_events->pluck('id') ) )->whereBetween('created_at',[$startDate,$endDate])->get();
+        $total = \App\Models\CamelotCandidate::all()->whereBetween('created_at',[$startDate,$endDate]);
+        //$total = Student::whereIn( 'formation_event_id', ( $formation_events->pluck('id') ) )->whereBetween('created_at',[$startDate,$endDate])->get();
+        $branches = $cfp->branches;
+        if($branch_id != 0){
+            $branch = Branch::find($branch_id);
+            $results = $branch->students->whereBetween('created_at',[$startDate,$endDate]);
+        }
+        else{
+            $results = $total;
+        }
     }
     else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente
         //$results = \App\Models\Student::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
@@ -86,7 +97,7 @@
     </style>
     <x-filament::section>
         {{----}}
-        <h1>Candidati segnalati in Camelot dal DB Alunni per la sede {{ Branch::find($branch_id)->name }}:</h1>
+        <h1>Candidati segnalati in Camelot dal DB Alunni per la sede {{ Branch::find($branch_id)->name ?? '' }}:</h1>
         <table class="modern-table">
             <thead>
             <tr>
