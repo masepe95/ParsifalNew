@@ -41,7 +41,7 @@ class CFPResource extends Resource
         return $form
             ->schema([
                 //
-                Forms\Components\TextInput::make('company_name')
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->label('Nome Società'),
                 Forms\Components\TextInput::make('email')->email()->required(),
@@ -112,8 +112,23 @@ class CFPResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id'),
-                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Ragione sociale'),
+                Tables\Columns\TextColumn::make('address')
+                    ->formatStateUsing(function ($state, CFP $cfp) {
+                        return $cfp->address . ', ' . $cfp->city;})
+                    ->label('Indirizzo sede legale'),
+                Tables\Columns\TextColumn::make('manager_surname')
+                    ->formatStateUsing(function ($state, CFP $cfp) {
+                        return $cfp->manager_name . ' ' . $cfp->manager_surname;})
+                    ->label('Referente'),
+                Tables\Columns\TextColumn::make('email')->label('Email'),
+                Tables\Columns\IconColumn::make('stage_enabled')
+                    ->boolean()
+                    ->label('Erogazione Stages'),
+                Tables\Columns\IconColumn::make('internship_enabled')
+                    ->boolean()
+                    ->label('Erogazione Tirocini'),
             ])
             ->filters([
                 //
@@ -121,11 +136,12 @@ class CFPResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+//            ->bulkActions([
+//                Tables\Actions\BulkActionGroup::make([
+//                    Tables\Actions\DeleteBulkAction::make(),
+//                ]),
+//            ])
+        ;
     }
 
     public static function getRelations(): array

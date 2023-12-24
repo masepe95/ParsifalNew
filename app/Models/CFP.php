@@ -17,7 +17,7 @@ class CFP extends Model
     protected $fillable = [
         'id',
         'user_id',
-        'company_name',
+        'name',
         'vat_number',
         'address',
         'city',
