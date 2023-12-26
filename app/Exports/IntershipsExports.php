@@ -31,7 +31,7 @@ class IntershipsExports implements FromCollection, WithHeadings, WithMapping
             'ID',
             'BRANCH',
             'CAMELOT COMPANY ID',
-            'CAMELOT MATCH ID',
+            'CAMELOT COMPANY MATCH ID',
             'NOME',
             'E-MAIL',
             'TELEFONO',

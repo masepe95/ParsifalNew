@@ -4,6 +4,8 @@ namespace App\Imports;
 
 use App\Models\Alumnus;
 use App\Models\Branch;
+use App\Models\CamelotCandidate;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -26,8 +28,8 @@ class AlumniImport implements ToModel, WithHeadingRow
     }
 
     /**
-    * @param Model $model
-    */
+     * @param Model $model
+     */
     public function model(array $row)
     {
         //
@@ -46,6 +48,36 @@ class AlumniImport implements ToModel, WithHeadingRow
             'score'    => $row['esito']??'',
             'tutor_name'    => $row['nome_tutor']??'',
         ]);
+
+        // Prepare pre-registration for Camelot Candidate
+        $was_camelot_candidate = CamelotCandidate::where('email',$alumnus->email)->first();
+        if( !isset($was_camelot_candidate) ){
+            $password = "Invito@Camelot";
+            $camelot_candidate_data = [
+                'name' => $alumnus->name . $alumnus->surname,
+                'email' => $alumnus->email,
+                'email_verified_at' => Carbon::now(),
+                'lead_source' => 'cfp|import_alumni|'. $branch->id,
+                'password' => \Illuminate\Support\Facades\Hash::make($password),
+            ];
+            $camelot_candidate = new CamelotCandidate($camelot_candidate_data);
+            $camelot_candidate->save();
+
+            //Invia mail di invito
+            $mailData = [
+                'candidate_id' => $camelot_candidate->id,
+                'branch_id' => $branch->id,
+                'name' => $camelot_candidate->name,
+                'email' => $camelot_candidate->email,
+                'password' => $password
+            ];
+
+            $alumnus['camelot_candidate_id'] = $camelot_candidate->id;
+
+            \Mail::to($camelot_candidate->email)->send(new \App\Mail\CamelotInvite($mailData));
+            \Log::info(print_r('Import successful, Camelot pre-registration mail sent: ' . print_r($alumnus, true), true));
+        }
+
         return $alumnus;
     }
 }
