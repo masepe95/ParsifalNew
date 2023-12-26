@@ -30,9 +30,14 @@ class CamelotCandidateRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('name')
+            ->paginated(false)
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                ->label('Nome'),
+                    ->label('Nome'),
+                Tables\Columns\TextColumn::make('email')
+                    ->label('Email'),
+                Tables\Columns\TextColumn::make('profile.mobile')
+                    ->label('Telefono'),
             ])
             ->filters([
                 //
