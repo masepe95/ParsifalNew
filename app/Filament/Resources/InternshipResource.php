@@ -22,6 +22,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\IntershipsExports;
 use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\Fieldset;
 
 class InternshipResource extends Resource
 {
@@ -65,6 +66,19 @@ class InternshipResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label('Ragione Sociale')
                     ->required(),
+//                Forms\Components\TextInput::make('camelotCandidate.name')
+//                    ->label('Nome Tirocinante')
+//                    ->extraInputAttributes(['readonly' => true]),
+//                Forms\Components\Fieldset::make('camelotCandidateName')
+//                Forms\Components\TextInput::make('camelotCandidate')
+//                    ->relationship('camelotCandidate')
+//                    ->schema([
+//                        Forms\Components\TextInput::make('name')
+//                            ->label('Nome Tirocinante')
+//                            ->extraInputAttributes(['readonly' => true]),
+//                    ])
+//                   ,
+
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->label('E-Mail')
@@ -89,8 +103,9 @@ class InternshipResource extends Resource
                 Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('branch.name')->label('Sede')->searchable(isIndividual: true)->visible(fn (): bool => auth()->user()->role_id == CFP),
                 //Tables\Columns\TextColumn::make('camelotCompanyProfile.name')->label('Azienda'),
-                Tables\Columns\TextColumn::make('camelot_company_id')->label('Id Azienda in Camelot'),
-                Tables\Columns\TextColumn::make('camelot_match_id')->label('Camelot Match Id'),
+                //Tables\Columns\TextColumn::make('camelot_company_id')->label('Id Azienda in Camelot'),
+                //Tables\Columns\TextColumn::make('camelot_company_match_id')->label('Camelot Match Id'),
+                Tables\Columns\TextColumn::make('camelotCandidate.name')->label('Nome Tirocinante'),
                 Tables\Columns\TextColumn::make('name')->label('Ragione Sociale Azienda')
                     ->sortable()
                     ->toggleable()
@@ -149,6 +164,7 @@ class InternshipResource extends Resource
     {
         return [
             //
+            RelationManagers\CamelotCandidateRelationManager::class,
         ];
     }
 

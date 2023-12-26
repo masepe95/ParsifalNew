@@ -87,9 +87,16 @@ class BranchResource extends Resource
                 //
 //                Tables\Columns\TextColumn::make('id'),
 //                Tables\Columns\TextColumn::make('user_id'),
-                Tables\Columns\TextColumn::make('name')->label('Nome'),
+                Tables\Columns\TextColumn::make('name')->label('Nome Sede'),
+                Tables\Columns\TextColumn::make('address')
+                    ->formatStateUsing(function ($state, Branch $branch) {
+                        return $branch->address . ', ' . $branch->city;})
+                    ->label('Indirizzo Sede'),
+                Tables\Columns\TextColumn::make('manager_surname')
+                    ->formatStateUsing(function ($state, Branch $branch) {
+                        return $branch->manager_name . ' ' . $branch->manager_surname;})
+                    ->label('Referente'),
                 Tables\Columns\TextColumn::make('email')->label('Email (username di accesso)'),
-                Tables\Columns\TextColumn::make('address')->label('Indirizzo'),
             ])
             ->filters([
                 //

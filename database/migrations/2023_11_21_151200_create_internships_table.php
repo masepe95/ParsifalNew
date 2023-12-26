@@ -16,7 +16,7 @@ return new class extends Migration
             //$table->bigInteger('branch_id'); // => valutare se tenere così
             $table->foreignId('branch_id')->references('id')->on('branches'); // O così perchè anche se elimino la gerarchia dei CFP/BRANCHES/COURSE/FROMATION_EVENT che mi lega l'Azienda, poi me la voglio conservare
             $table->integer('camelot_company_id');
-            $table->integer('camelot_match_id');
+            $table->integer('camelot_company_match_id');
             $table->string('name');
             $table->string('email');
             $table->string('phone')->nullable();

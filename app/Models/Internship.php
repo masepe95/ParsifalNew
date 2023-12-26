@@ -38,6 +38,11 @@ class Internship extends Model
         return $this->hasOne(Tutor::class);
     }
 
+    public function camelotCandidate()
+    {
+        return $this->hasOne(CamelotCandidate::class, 'id', 'camelot_candidate_id');
+    }
+
     public function camelotCompany()
     {
         return $this->hasOne(CamelotCompany::class, 'id', 'camelot_company_id');

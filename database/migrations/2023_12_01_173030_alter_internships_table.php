@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigInteger('internship_status_id')->after('parsifal_enrolled_at');
             //$table->foreignId('tutor_id')->references('id')->on('tutors');
             $table->bigInteger('tutor_id')->after('internship_status_id');
-            $table->integer('camelot_candidate_id')->after('camelot_match_id');
+            $table->integer('camelot_candidate_id')->after('camelot_company_match_id');
         });
     }
 

@@ -47,7 +47,7 @@ class IntershipsExports implements FromCollection, WithHeadings, WithMapping
             $intership->id,
             $intership->branch->name,
             $intership->camelot_company_id,
-            $intership->camelot_match_id,
+            $intership->camelot_company_match_id,
             $intership->name,
             $intership->email,
             $intership->phone,
