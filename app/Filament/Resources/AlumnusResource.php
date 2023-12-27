@@ -76,9 +76,9 @@ class AlumnusResource extends Resource
                 Tables\Columns\TextColumn::make('start_date')->label('Data inizio')->sortable()->searchable()->toggleable(),
                 Tables\Columns\TextColumn::make('end_date')->label('Data fine')->sortable()->searchable()->toggleable(),
                 Tables\Columns\TextColumn::make('score')->label('Esito')->sortable()->searchable()->toggleable(),
-                Tables\Columns\TextColumn::make('camelot_sign_up_date')->label('Data Segnalazione a Camelot')->sortable()->searchable()->toggleable(),
-                Tables\Columns\TextColumn::make('camelot_sign_up_status')->label('Stato Iscrizione a Camelot')->sortable()->searchable()->toggleable(),
-                Tables\Columns\TextColumn::make('camelotRecruitmentProcessStep.name')->label('Stato percorso di assunzione')->sortable()->searchable()->toggleable(),
+                Tables\Columns\TextColumn::make('camelot_sign_up_date')->label('Data invito iscrizione')->sortable()->searchable()->toggleable(),
+                Tables\Columns\IconColumn::make('camelot_sign_up_status')->boolean()->label('Stato Iscrizione a Camelot')->sortable()->searchable()->toggleable(),
+                Tables\Columns\TextColumn::make('camelotRecruitmentProcessStep.name')->label('Stato percorso in camelot')->sortable()->searchable()->toggleable(),
             ])
             ->filters([
                 //

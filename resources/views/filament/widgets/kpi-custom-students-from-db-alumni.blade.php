@@ -97,7 +97,7 @@
     </style>
     <x-filament::section>
         {{----}}
-        <h1>Candidati segnalati in Camelot dal DB Alunni per la sede {{ Branch::find($branch_id)->name ?? '' }}:</h1>
+        <h1>Candidati iscritti in Camelot dal DB Alunni per la sede {{ Branch::find($branch_id)->name ?? '' }}:</h1>
         <table class="modern-table">
             <thead>
             <tr>

@@ -41,7 +41,7 @@ class CourseResource extends Resource
                 //
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->label('Argomento/Nome del Corso'),
+                    ->label('Argomento'),
                 Forms\Components\Select::make('course_type_id')
                     ->required()
                     ->label('Tipo di corso')

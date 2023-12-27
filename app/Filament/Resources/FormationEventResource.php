@@ -68,7 +68,7 @@ class FormationEventResource extends Resource
                 //
                 Forms\Components\Select::make('course_id')
                     ->required()
-                    ->label('Corso tenuto')
+                    ->label('Argomento (Catalogo Corsi)')
                     ->searchable()
                     //->default(Course::where('cfp_id', '=', $parentCFP->id)->first()->id)
                     ->options(Course::where('cfp_id', '=', $parentCFP->id)->pluck('name', 'id'))
@@ -77,13 +77,13 @@ class FormationEventResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->placeholder(fn (Get $get) => $get('course_id') ? Course::find($get('course_id'))->name : null )
-                    ->label('Nome'),
+                    ->label('Nome corso'),
                 Forms\Components\Select::make('course_type_id')
                     ->required()
                     ->label('Tipo di corso')
                     ->options(CourseType::all()->pluck('name', 'id')),
                 Forms\Components\Select::make('tutor_id')
-                    ->required()
+                    //->required()
                     ->label('Tutor')
                     //->placeholder('Crea prima un Tutor')
                     ->options(Tutor::where('branch_id', '=', $currentBranch->id)->pluck('name', 'id')),
@@ -115,8 +115,8 @@ class FormationEventResource extends Resource
                 //
                 Tables\Columns\TextColumn::make('id')->label('Codice Evento')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('branch.name')->label('Sede')->searchable(isIndividual: true)->visible(fn (): bool => auth()->user()->role_id == CFP),
-                Tables\Columns\TextColumn::make('course.name')->label('Nome Corso')->sortable()->searchable(isIndividual: true),
-                Tables\Columns\TextColumn::make('name')->label('Nome Evento')->sortable()->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('course.name')->label('Argomento')->sortable()->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('name')->label('Nome Corso')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\ImageColumn::make('banner') // TODO [EA:20231205]: Remember to use php artisan storage:link
                 ->getStateUsing(function (FormationEvent $record): string {
                     return $record->banner??'';
