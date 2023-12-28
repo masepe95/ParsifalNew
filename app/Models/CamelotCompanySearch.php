@@ -15,4 +15,9 @@ class CamelotCompanySearch extends Model
     public function matches(){
         return $this->hasMany(CamelotCompanyMatch::class,  'company_research_id', 'id');
     }
+
+    public function task(){
+        return $this->belongsTo(Task::class, 'task_id', 'id');
+    }
+
 }

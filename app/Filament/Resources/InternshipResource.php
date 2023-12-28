@@ -89,6 +89,10 @@ class InternshipResource extends Resource
                     //->label('Data Registrazione Parsifal'),
                     ->label('Data Variazione Dati')
                     ->required(),
+                Forms\Components\Placeholder::make('task')
+                    ->content(fn (Internship $record): string => $record->camelotCompanyMatch->camelotCompanySearch->task->name ?? 'n.d.')
+                    ->label('Mansione')
+                ,
                 Forms\Components\Select::make('internship_status_id')
                     ->required()
                     ->searchable()
@@ -107,6 +111,7 @@ class InternshipResource extends Resource
                 //Tables\Columns\TextColumn::make('camelot_company_id')->label('Id Azienda in Camelot'),
                 //Tables\Columns\TextColumn::make('camelot_company_match_id')->label('Camelot Match Id'),
                 Tables\Columns\TextColumn::make('camelotCandidate.name')->label('Nome Tirocinante'),
+                Tables\Columns\TextColumn::make('camelotCompanyMatch.camelotCompanySearch.task.name')->label('Mansione'),
                 Tables\Columns\TextColumn::make('name')->label('Ragione Sociale Azienda')
                     ->sortable()
                     ->toggleable()

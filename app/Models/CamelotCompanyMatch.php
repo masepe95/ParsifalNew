@@ -11,4 +11,9 @@ class CamelotCompanyMatch extends Model
 
     protected $connection = 'mysql_camelot';
     protected $table = 'company_matches';
+
+    public function camelotCompanySearch(){
+        return $this->belongsTo(CamelotCompanySearch::class,'company_research_id', 'id');
+    }
+
 }

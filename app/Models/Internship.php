@@ -53,4 +53,8 @@ class Internship extends Model
         return $this->hasOne(CamelotCompanyProfile::class, 'company_id', 'camelot_company_id');
     }
 
+    public function camelotCompanyMatch(){
+        return $this->belongsTo(CamelotCompanyMatch::class,'camelot_company_match_id', 'id');
+    }
+
 }

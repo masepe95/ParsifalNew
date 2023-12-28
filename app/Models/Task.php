@@ -9,6 +9,7 @@ class Task extends Model
 {
     use HasFactory;
 
+    protected $connection = 'mysql_camelot';
 
     public function courses()
     {
