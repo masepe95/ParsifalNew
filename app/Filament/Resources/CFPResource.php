@@ -85,10 +85,6 @@ class CFPResource extends Resource
                     ->label('Erogazione Tirocini'),
                 Forms\Components\Checkbox::make('stage_enabled')
                     ->label('Erogazione Stage'),
-                Forms\Components\Select::make('cfp_formation_type_id')
-                    ->required()
-                    ->label('Tipi di Formazione')
-                    ->options(CFPFormationType::all()->pluck('name', 'id')),
                 Forms\Components\Select::make('cfp_type_id')
                     ->required()
                     ->label('Tipo di Centro')
@@ -97,14 +93,18 @@ class CFPResource extends Resource
                     ->required()
                     ->label('Accreditamento')
                     ->options(CFPAccreditationType::all()->pluck('name', 'id')),
-                Forms\Components\Select::make('cfp_course_type_id')
-                    ->required()
+                Forms\Components\checkBoxList::make('cfp_formation_types')
+                    //->required()
+                    ->label('Tipi di Formazione')
+                    ->relationship('cfpFormationTypes','name'),
+                Forms\Components\checkBoxList::make('cfp_course_types')
+                    //->required()
                     ->label('Tipo di Corsi')
-                    ->options(CFPCourseType::all()->pluck('name', 'id')),
-                Forms\Components\Select::make('cfp_audience_type_id')
-                    ->required()
+                    ->relationship('cfpCourseTypes','name'),
+                Forms\Components\checkBoxList::make('cfp_audience_types')
+                    //->required()
                     ->label('Tipo di Destinatari')
-                    ->options(CFPAudienceType::all()->pluck('name', 'id')),
+                    ->relationship('cfpAudienceTypes','name'),
             ]);
     }
 

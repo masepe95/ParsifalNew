@@ -68,24 +68,24 @@ class CFP extends Model
         return $this->hasOne(CFPType::class);
     }
 
-    public function cfpFormationType()
-    {
-        return $this->hasOne(CFPFormationType::class);
-    }
-
     public function cfpAccreditationType()
     {
         return $this->hasOne(CFPAccreditationType::class);
     }
 
-    public function cfpCourseType()
+    public function cfpFormationTypes()
     {
-        return $this->hasOne(CFPCourseType::class);
+        return $this->belongsToMany(CFPFormationType::class);
     }
 
-    public function cfpAudienceType()
+    public function cfpCourseTypes()
     {
-        return $this->hasOne(CFPAudienceType::class);
+        return $this->belongsToMany(CFPCourseType::class);
+    }
+
+    public function cfpAudienceTypes()
+    {
+        return $this->belongsToMany(CFPAudienceType::class);
     }
 
 }
