@@ -62,4 +62,9 @@ class Branch extends Model
         return $this->hasManyThrough(Student::class, FormationEvent::class);
     }
 
+    public function alumni()
+    {
+        return $this->hasMany(Alumnus::class);
+    }
+
 }

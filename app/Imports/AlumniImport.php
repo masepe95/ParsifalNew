@@ -57,7 +57,7 @@ class AlumniImport implements ToModel, WithHeadingRow
                 'name' => $alumnus->name . $alumnus->surname,
                 'email' => $alumnus->email,
                 'email_verified_at' => Carbon::now(),
-                'lead_source' => 'cfp|import_alumni|'. $branch->id,
+                'lead_source' => 'cfp|import_alumni|'. $branch->id.'|',
                 'password' => \Illuminate\Support\Facades\Hash::make($password),
             ];
             $camelot_candidate = new CamelotCandidate($camelot_candidate_data);

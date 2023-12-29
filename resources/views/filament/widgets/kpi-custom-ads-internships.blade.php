@@ -108,7 +108,8 @@
         <table class="modern-table">
             <thead>
             <tr>
-                <th>Occorrenze<br/></th>
+                <th>Segnalati</th>
+                <th>Attivati</th>
                 <th style="text-align: right">Percentuale (su {{ $total->count() }} tot.)</th>
                 {{--
                 <th>Percentuale</th>
@@ -118,11 +119,12 @@
             <tbody>
                 <tr>
                     <td style="text-align: center">{{ $results->count() }}</td>
+                    <td style="text-align: center">{{ $results->where('internship_status_id','=',STARTED)->count() }}</td>
                     {{--
                     <td style="text-align: center">{{ $total->count() }}</td>
                     --}}
                     @if($total->count() != 0)
-                        <td style="text-align: right">{{ number_format($results->count() / $total->count() * 100,2) }}%</td>
+                        <td style="text-align: right">{{ number_format( $results->where('internship_status_id','=',STARTED)->count() / $total->count() * 100,2) }}%</td>
                     @else
                         <td style="text-align: right">n.d.</td>
                     @endif

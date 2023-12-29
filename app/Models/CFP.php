@@ -57,8 +57,18 @@ class CFP extends Model
         return $this->hasManyThrough(
             FormationEvent::class,
             Branch::class,
-            'cfp_id', // foreign key on formation_events table
-            'branch_id', // foreign key on branches table
+            'cfp_id', // foreign key on branches table
+            'branch_id', // foreign key on formation_events table
+            'id', // local key on c_f_p_s table (main model table)
+            'id'); // local key on branches table (intermediate model table)
+    }
+
+    public function alumni(){
+        return $this->hasManyThrough(
+            Alumnus::class,
+            Branch::class,
+            'cfp_id', // foreign key on branches table
+            'branch_id', // foreign key on alumni table
             'id', // local key on c_f_p_s table (main model table)
             'id'); // local key on branches table (intermediate model table)
     }

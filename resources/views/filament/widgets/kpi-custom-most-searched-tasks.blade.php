@@ -21,7 +21,7 @@
         $branch_id = $branch->id;
     }
 
-    if( !isset($branch_id) && $branch_id == 0 ){
+    if( !isset($branch_id) || $branch_id == 0 ){
         $results = null;
         $total_weighted_dream_jobs = null;
         $total_dream_jobs = null;
@@ -117,7 +117,7 @@
             <tbody>
             @php $rownum = 1; @endphp
             @if($results)
-            @foreach ($results as $result)
+                @foreach ($results as $result)
                     <tr>
                         <td style="text-align: left">{{ $rownum }}</td>
                         <td style="text-align: left">{{ $result->name ?? '' }}</td>

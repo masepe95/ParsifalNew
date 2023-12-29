@@ -24,14 +24,16 @@
 
     if (auth()->user()->role_id == CFP) {
         $cfp = CFP::where('user_id',auth()->id())->first();
-        $results = \App\Models\CamelotCandidate::where('lead_source','like', "%{$cfp->name}%")->whereBetween('created_at',[$startDate,$endDate]);
+        $results = \App\Models\CamelotCandidate::where('lead_source','like', "%{$cfp->name}%")->whereBetween('created_at',[$startDate,$endDate])->pluck('id');
+        $activated = \App\Models\CamelotCandidateProfile::whereIn('user_id',$results)->whereBetween('created_at',[$startDate,$endDate]);
     }
     else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente        $cfp = CFP::where('user_id',auth()->id())->first();
         $branch = Branch::where('user_id',auth()->id())->first();
 //         dd($branch);
         $cfp = $branch->cfp;
-        $results = \App\Models\CamelotCandidate::where('lead_source','like', "%{$cfp->name}%")->whereBetween('created_at',[$startDate,$endDate]);
+        $results = \App\Models\CamelotCandidate::where('lead_source','like', "%{$cfp->name}%")->whereBetween('created_at',[$startDate,$endDate])->pluck('id');
 //         dd($results);
+        $activated = \App\Models\CamelotCandidateProfile::whereIn('user_id',$results)->whereBetween('created_at',[$startDate,$endDate]);
     }
     $total = \App\Models\CamelotCandidate::all()->whereBetween('created_at',[$startDate,$endDate]);
 
@@ -85,13 +87,15 @@
         <table class="modern-table">
             <thead>
             <tr>
-                <th>Occorrenze</th>
+                <th>Totale segnalazioni</th>
+                <th>Profili attivati</th>
                 <th style="text-align: right">Percentuale (su {{ $total->count() }} tot.)</th>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td style="text-align: center">{{ $results->count() }}</td>
+                <td style="text-align: center">{{ $results->whereNotNull('email_verified_at')->count() }}</td>
                 @if($total->count() != 0)
                     <td style="text-align: right">{{ number_format($results->count() / $total->count() * 100,2) }}%</td>
                 @else
