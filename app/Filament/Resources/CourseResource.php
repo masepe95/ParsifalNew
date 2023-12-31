@@ -83,6 +83,7 @@ class CourseResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 //
                 Tables\Columns\TextColumn::make('code')->label('Codice')->sortable()->searchable(isIndividual: true),

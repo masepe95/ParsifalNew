@@ -98,6 +98,7 @@ class StudentResource extends Resource
     {
         return $table
             ->defaultSort('created_at', 'desc')
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('id')->sortable(),
                 Tables\Columns\TextColumn::make('formationEvent.branch.name')->label('Sede')->searchable(isIndividual: true)->visible(fn (): bool => auth()->user()->role_id == CFP),

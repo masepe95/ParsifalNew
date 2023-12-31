@@ -24,7 +24,9 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->brandLogo(asset('images/logo_parsifal.png'))
+            ->brandLogo(asset('images/logo_parsifal_nero.png'))
+            ->darkModeBrandLogo(asset('images/logo_parsifal_bianco.png'))
+            ->brandLogoHeight('100%')
             ->id('admin')
             ->path('admin')
             ->login()
