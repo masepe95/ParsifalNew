@@ -17,6 +17,10 @@ class Dashboard extends BaseDashboard
 {
     use \Filament\Pages\Dashboard\Concerns\HasFiltersForm;
 
+    protected static ?string $title = 'KPIs';
+
+    protected static ?int $navigationSort = 99;
+
     public function filtersForm(Form $form): Form
     {
         if(auth()->user()->role_id == CFP) {

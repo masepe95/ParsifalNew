@@ -112,6 +112,7 @@ class CFPResource extends Resource
     {
         return $table
             ->striped()
+            ->paginated(false)
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Ragione sociale'),
