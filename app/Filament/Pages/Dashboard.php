@@ -18,6 +18,7 @@ class Dashboard extends BaseDashboard
     use \Filament\Pages\Dashboard\Concerns\HasFiltersForm;
 
     protected static ?string $title = 'KPIs';
+    protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
 
     protected static ?int $navigationSort = 99;
 

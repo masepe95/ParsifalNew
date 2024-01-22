@@ -38,7 +38,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url('/admin') }}">{{ __('Home') }}</a>
+                            <a class="nav-link" href="{{url('/admin') }}">{{ __('Accedi') }}</a>
                         </li>
 {{--                        <li class="nav-item">
                             <a class="nav-link" href="{{url('/') }}">{{ __('Nuovi Candidati') }}</a>
