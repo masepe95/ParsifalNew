@@ -2,6 +2,7 @@
     $candidate = \App\Models\CamelotCandidate::find($mailData['candidate_id']);
     //$candidate = $mailData->candidate;
     $branch = \App\Models\Branch::find($mailData['branch_id']);
+    $cfp = \App\Models\CFP::find($branch->cfp_id);
     //$branch = $mailData->branch;
     $password=$mailData['password'];
 @endphp
@@ -111,7 +112,8 @@
 <p style="FONT-SIZE: 24px; MARGIN-BOTTOM: 1em; FONT-FAMILY: geneve, arial, helvetica, sans-serif; MARGIN-TOP: 0px; COLOR: #2d2d2d; TEXT-ALIGN: justify; LINE-HEIGHT: 37px; BACKGROUND-COLOR: transparent; mso-line-height-rule: exactly" align="justify"><strong>Unisciti</strong> a Camelot: <strong>&egrave; gratis!</strong></p>
 <p style="FONT-SIZE: 16px; MARGIN-BOTTOM: 1em; FONT-FAMILY: geneve, arial, helvetica, sans-serif; MARGIN-TOP: 0px; COLOR: #2d2d2d; TEXT-ALIGN: left; LINE-HEIGHT: 25px; BACKGROUND-COLOR: transparent; mso-line-height-rule: exactly" align="left">Ciao {{$candidate->name}},<br />
 Abbiamo una notizia stupenda: non vogliamo solo aiutarti con la formazione, vogliamo anche farti avere il lavoro che desideri. Per questo ci siamo uniti a Camelot.</p>
-<p style="FONT-SIZE: 16px; MARGIN-BOTTOM: 1em; FONT-FAMILY: geneve, arial, helvetica, sans-serif; MARGIN-TOP: 0px; COLOR: #2d2d2d; TEXT-ALIGN: left; LINE-HEIGHT: 25px; BACKGROUND-COLOR: transparent; mso-line-height-rule: exactly" align="left">Non avrai curriculum da scrivere, n&eacute; annunci da leggere. Ti basta completare il profilo ed indicare il lavoro dei tuoi sogni: al resto ci pensa Camelot.</p>
+<p style="FONT-SIZE: 16px; MARGIN-BOTTOM: 1em; FONT-FAMILY: geneve, arial, helvetica, sans-serif; MARGIN-TOP: 0px; COLOR: #2d2d2d; TEXT-ALIGN: left; LINE-HEIGHT: 25px; BACKGROUND-COLOR: transparent; mso-line-height-rule: exactly" align="left">Non avrai curriculum da scrivere, n&eacute; annunci da leggere. Ti basta completare il profilo ed indicare il lavoro dei tuoi sogni: al resto ci pensa Camelot!<br/>
+    Il tutto in perfetta sicurezza: decidi tu se condividere i tuoi dati per questo scopo.</p>
 <p style="FONT-SIZE: 16px; MARGIN-BOTTOM: 1em; FONT-FAMILY: geneve, arial, helvetica, sans-serif; MARGIN-TOP: 0px; COLOR: #2d2d2d; TEXT-ALIGN: left; LINE-HEIGHT: 25px; BACKGROUND-COLOR: transparent; mso-line-height-rule: exactly" align="left">Vuoi lasciartela scappare?<br />
 Le occasioni vanno colte al volo.</p>
 <p style="FONT-SIZE: 16px; MARGIN-BOTTOM: 1em; FONT-FAMILY: geneve, arial, helvetica, sans-serif; MARGIN-TOP: 0px; COLOR: #2d2d2d; TEXT-ALIGN: left; LINE-HEIGHT: 25px; BACKGROUND-COLOR: transparent; mso-line-height-rule: exactly" align="left"><strong>Accedi e unisciti anche tu a Camelot</strong></p>
@@ -151,7 +153,7 @@ Le occasioni vanno colte al volo.</p>
 <td style="PADDING-BOTTOM: 2px; PADDING-TOP: 5px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px" align="center">
 <table cellspacing="0" cellpadding="0" border="0">
 <tr>
-<td style="BORDER-TOP: medium none; BORDER-RIGHT: medium none; BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BACKGROUND-COLOR: transparent"><a target="_blank" rel="noopener noreferrer" href="{{config('constants.camelot_webapp_url')}}/partnership_login?name={{$candidate->name}}&email={{$candidate->email}}&password={{$password}}"><img style="BORDER-TOP: medium none; BORDER-RIGHT: medium none; BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; DISPLAY: block" alt="" src="{{config('app.url')}}/images/mail-invite/Image_4_2c32f1f4-ef03-48cc-873d-cb5e28455355.png" width="362" hspace="0" vspace="0" /></a></td>
+<td style="BORDER-TOP: medium none; BORDER-RIGHT: medium none; BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BACKGROUND-COLOR: transparent"><a target="_blank" rel="noopener noreferrer" href="{{config('constants.camelot_webapp_url')}}/partnership_login?name={{$candidate->name}}&email={{$candidate->email}}&password={{$password}}&utm_source={{urlencode($cfp->name??'n.d.')}}&utm_medium=parsifal_invitation&utm_campaign={{urlencode($branch->id??'n.d.')}}"><img style="BORDER-TOP: medium none; BORDER-RIGHT: medium none; BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; DISPLAY: block" alt="" src="{{config('app.url')}}/images/mail-invite/Image_4_2c32f1f4-ef03-48cc-873d-cb5e28455355.png" width="362" hspace="0" vspace="0" /></a></td>
 </tr>
 </table>
 </td>

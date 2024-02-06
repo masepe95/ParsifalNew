@@ -79,7 +79,7 @@
                             -	<b>Sicuro:</b> i tuoi dati e quelli delle categorie di contatti da te gestite in questo portale saranno private e soggette a strette condizioni di privacy: tu decidi quali dati conferire e come verranno gestiti<br>
                         </p>
                         <p>
-                            Puoi visionare informazioni piu’ dettagliate qui <a target="_blank" href="https://www.privacylab.it/informativa.php?21504461458">Soggetti Interessati: fruitori del portale Webapp.Parsifal-Italia.com.</a>
+                            Puoi visionare informazioni piu’ dettagliate qui <a target="_blank" href="https://www.privacylab.it/informativa.php?21504472514">Soggetti Interessati: fruitori del portale Webapp.Parsifal-Italia.com.</a>
                         </p>
 
                     </form>

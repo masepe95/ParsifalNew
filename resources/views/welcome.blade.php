@@ -40,7 +40,7 @@
                 Puoi visionare i termini e le condizioni del servizio qui <a target="_blank" href="/storage/downloads/condizioni_fornitura_parsifal.pdf">t&c.doc</a>
             </p>
             <p>
-                Tutti i dettagli sulla privacy li trovi <a target="_blank" href="/storage/downloads/21504_51_472514_2719900_informativa_a_ fruitori_portale_webapp.parsifal-italia.com.pdf">qui</a>
+                Tutti i dettagli sulla privacy li trovi <a target="_blank" href="https://www.privacylab.it/informativa.php?21504472514">qui</a>
             </p>
 @else
             <p>

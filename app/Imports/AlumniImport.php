@@ -35,6 +35,7 @@ class AlumniImport implements ToModel, WithHeadingRow
         if ($row['email']) {
             //
             $branch = Branch::where('user_id', '=', auth()->id())->first();
+            $cfp = CFP::where('id','=',$branch->cfp_id)->first();
             $alumnus = new Alumnus([
                 'branch_id' => $branch->id,
                 'name' => $row['nome'] ?? '',
@@ -58,7 +59,7 @@ class AlumniImport implements ToModel, WithHeadingRow
                     'name' => $alumnus->name . ' ' . $alumnus->surname,
                     'email' => $alumnus->email,
                     'email_verified_at' => Carbon::now(),
-                    'lead_source' => 'cfp|import_alumni|' . $branch->id . '|',
+                    'lead_source' => $cfp->name . '|import_alumni|' . $branch->id . '|', // lead_source = nome_cfp|import_alumni|id_branch
                     'password' => \Illuminate\Support\Facades\Hash::make($password),
                 ];
                 $camelot_candidate = new CamelotCandidate($camelot_candidate_data);
