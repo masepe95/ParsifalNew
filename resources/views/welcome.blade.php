@@ -44,7 +44,7 @@
             </p>
 @else
             <p>
-                Per iscriverti in Parsifal, contatta il nostro supporto commerciale qui <a target="_blank" href="info@parsifal-italia.com">info@parsifal-italia.com</a>
+                Per iscriverti in Parsifal, contatta il nostro supporto commerciale qui <a target="_blank" href="mailto:info@parsifal-italia.com">info@parsifal-italia.com</a>
             </p>
 @endauth
 
