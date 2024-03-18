@@ -127,7 +127,8 @@ class FormationEventResource extends Resource
                     ])
                 //->extraImgAttributes('')
                 //->height('5')
-                ,                Tables\Columns\TextColumn::make('course.list_price')->label('Prezzo')->sortable(),
+                ,
+                Tables\Columns\TextColumn::make('course.list_price')->label('Prezzo')->sortable(),
                 Tables\Columns\TextColumn::make('start_date')->label('Data inizio'),
                 Tables\Columns\TextColumn::make('end_date')->label('Data fine'),
             ])

@@ -125,6 +125,18 @@ class CourseResource extends Resource
         ];
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        // Se l'utente è un CFP, mostra tutti i Branch che ha creato
+        if (auth()->user()->role_id == CFP) {
+            return $query->whereHas('cfp', function ($query) {
+                $query->where('user_id', auth()->id());
+            });
+        }
+    }
+
     public static function getPages(): array
     {
         return [

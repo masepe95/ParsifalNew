@@ -13,7 +13,7 @@ class CoursePolicy
      */
     public function viewAny(User $user): Response
     {
-        return $user->role_id === 1
+        return $user->role_id === CFP
             ? Response::allow()
             : Response::deny('Non puoi visualizzare questo profilo');
     }
@@ -23,7 +23,9 @@ class CoursePolicy
      */
     public function view(User $user, Course $course): bool
     {
-        return true;
+        if ($course->cfp->user_id === $user->id) {
+            return Response::allow();
+        }
     }
 
     /**

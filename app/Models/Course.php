@@ -30,7 +30,7 @@ class Course extends Model
 
     public function cfp()
     {
-        return $this->belongsTo(CFP::class);
+        return $this->belongsTo(CFP::class, 'cfp_id', 'id');
     }
 
     public function courseType()

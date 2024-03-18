@@ -49,7 +49,7 @@ class CFP extends Model
 
     public function courses()
     {
-        return $this->hasMany(Course::class);
+        return $this->hasMany(Course::class,'cfp_id', 'id');
     }
 
     public function formationEvents()
