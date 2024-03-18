@@ -47,6 +47,7 @@ class CFPResource extends Resource
                 Forms\Components\TextInput::make('email')->email()->required(),
                 Forms\Components\TextInput::make('vat_number')
                     ->required()
+                    ->maxLength(16)
                     ->label('Partita IVA'),
                 Forms\Components\TextInput::make('address')
                     ->required()
@@ -56,9 +57,11 @@ class CFPResource extends Resource
                     ->label('Località'),
                 Forms\Components\TextInput::make('district')
                     ->required()
+                    ->maxLength(2)
                     ->label('Provincia'),
                 Forms\Components\TextInput::make('postal_code')
                     ->required()
+                    ->maxLength(5)
                     ->label('C.A.P.'),
                 Forms\Components\TextInput::make('manager_name')
                     ->required()

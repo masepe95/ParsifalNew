@@ -64,9 +64,11 @@ class BranchResource extends Resource
                     ->label('Provincia'),
                 Forms\Components\TextInput::make('postal_code')
                     ->required()
+                    ->maxLength(2)
                     ->label('C.A.P.'),
                 Forms\Components\TextInput::make('manager_name')
                     ->required()
+                    ->maxLength(5)
                     ->label('Nome Referente'),
                 Forms\Components\TextInput::make('manager_surname')
                     ->required()
