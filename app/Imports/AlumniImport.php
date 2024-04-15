@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Alumnus;
 use App\Models\Branch;
+use App\Models\CFP;
 use App\Models\CamelotCandidate;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
