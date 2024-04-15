@@ -1,6 +1,7 @@
 <?php
 
 // Some App Globals
+const ISADMIN = 99;
 const CFP = 1;
 const BRANCH = 2;
 const NEWCOMER = 0; // Student or Internship prospect

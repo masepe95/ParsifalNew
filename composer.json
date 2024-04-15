@@ -17,7 +17,8 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "maatwebsite/excel": "^3.1",
-        "pacificdev/laravel_9_preset": "^1.1"
+        "pacificdev/laravel_9_preset": "^1.1",
+        "stechstudio/filament-impersonate": "^3.8"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^v3.9.0",
