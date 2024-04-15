@@ -14,4 +14,5 @@ return [
     'dev_mail' => env('MAIL_DEV'),
     'admin_mail' => env('MAIL_ADMIN'),
 
+
 ];
