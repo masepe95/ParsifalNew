@@ -4,7 +4,7 @@
     use App\Models\Branch;
     use Carbon\Carbon;
 
-    xdebug_break();
+    //xdebug_break();
 
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :
@@ -21,7 +21,7 @@
         $branch_id = $branch->id;
     }
 
-    if( !isset($branch_id) || $branch_id == 0 ){
+    if( empty($branch_id) || $branch_id == 0 ){
         $results = null;
         $total_weighted_dream_jobs = null;
         $total_dream_jobs = null;

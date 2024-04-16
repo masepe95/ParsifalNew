@@ -6,6 +6,8 @@
     use App\Models\CFP;
     use Carbon\Carbon;
 
+    //xdebug_break();
+
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :
         '2023-01-01';
@@ -21,11 +23,11 @@
         $branch_id = $branch->id;
     }
 
-    if (auth()->user()->role_id == CFP) {
+    if ( auth()->user()->role_id == CFP || auth()->user()->role_id == ISADMIN ) {
         $total = Internship::query()->whereHas('branch', function ($query) {
             $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
         })->get();
-        if($branch_id != 0){
+        if($branch_id != 0 && !empty($branch_id) ){
             $results = Internship::query()->whereHas('branch', function ($query) {
                 $query->where('cfp_id', CFP::where('user_id', auth()->id())->first()->id);
             })

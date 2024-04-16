@@ -7,6 +7,8 @@
     use App\Models\CFP;
     use Carbon\Carbon;
 
+    xdebug_break();
+
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :
         '2023-01-01';
@@ -22,12 +24,12 @@
         $branch_id = $branch->id;
     }
 
-    if (auth()->user()->role_id == CFP) {
+    if ( auth()->user()->role_id == CFP || auth()->user()->role_id == ISADMIN ) {
         $cfp = CFP::where('user_id',auth()->id())->first();
         $formation_events = $cfp->formationEvents;
         $total = Student::whereIn( 'formation_event_id', ( $formation_events->pluck('id') ) )->whereBetween('created_at',[$startDate,$endDate])->get();
         $branches = $cfp->branches;
-        if($branch_id != 0){
+        if( $branch_id != 0 && !empty($branch_id) ){
             $branch = Branch::find($branch_id);
             $results = $branch->students->whereBetween('created_at',[$startDate,$endDate]);
         }

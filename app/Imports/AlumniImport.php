@@ -60,7 +60,7 @@ class AlumniImport implements ToModel, WithHeadingRow
                     'name' => $alumnus->name . ' ' . $alumnus->surname,
                     'email' => $alumnus->email,
                     'email_verified_at' => Carbon::now(),
-                    'lead_source' => $cfp->name . '|import_alumni|' . $branch->id . '|', // lead_source = nome_cfp|import_alumni|id_branch
+                    'lead_source' => $cfp->name . '|import_alumni|' . $branch->id, // lead_source = nome_cfp|import_alumni|id_branch
                     'password' => \Illuminate\Support\Facades\Hash::make($password),
                 ];
                 $camelot_candidate = new CamelotCandidate($camelot_candidate_data);
@@ -89,5 +89,4 @@ class AlumniImport implements ToModel, WithHeadingRow
 
     }
 
-    
 }

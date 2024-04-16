@@ -7,7 +7,7 @@
     use App\Models\CFP;
     use Carbon\Carbon;
 
-    xdebug_break();
+    //xdebug_break();
 
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :
@@ -29,25 +29,26 @@
         $branch_id = $branch->id;
     }
 
-    if (auth()->user()->role_id == CFP) {
+    if ( auth()->user()->role_id == CFP || auth()->user()->role_id == ISADMIN ) {
         $cfp = CFP::where('user_id',auth()->id())->first();
+
         $formation_events = $cfp->formationEvents;
         //$total = \App\Models\CamelotCandidate::all()->whereBetween('created_at',[$startDate,$endDate]);
         //$total = Student::whereIn( 'formation_event_id', ( $formation_events->pluck('id') ) )->whereBetween('created_at',[$startDate,$endDate])->get();
         //dd($total);
         $branches = $cfp->branches;
 
-        if($branch_id != 0){ // Singola branch, con id definito
+        if( $branch_id != 0 && !empty($branch_id) ){ // Singola branch, con id definito
             $branch = Branch::find($branch_id);
-            $results = \App\Models\CamelotCandidate::where('lead_source','=','cfp|import_alumni|'. $branch->id)->whereBetween('created_at',[$startDate,$endDate])->pluck('id');
+            $results = \App\Models\CamelotCandidate::where('lead_source','=', $cfp->name.'|import_alumni|'.$branch->id)->whereBetween('created_at',[$startDate,$endDate])->pluck('id');
             $activated = \App\Models\CamelotCandidateProfile::whereIn('user_id',$results)->whereBetween('created_at',[$startDate,$endDate]);
             $total = $branch->alumni->whereBetween('created_at',[$startDate,$endDate]);
         }
         else{ // branch->id == 0, devo gestirle tutte
             $branches_leads = array();
             foreach($branches as $branch){
-                $branch_lead = 'cfp|import_alumni|'.$branch->id;
-                $branches_leads[] = $branch_lead;
+                $branch_lead = $cfp->name.'|import_alumni|'.$branch->id;
+                array_push($branches_leads, $branch_lead);
             }
             $results = \App\Models\CamelotCandidate::whereIn('lead_source',$branches_leads)->whereBetween('created_at',[$startDate,$endDate])->pluck('id');
             $activated = \App\Models\CamelotCandidateProfile::whereIn('user_id',$results)->whereBetween('created_at',[$startDate,$endDate]);

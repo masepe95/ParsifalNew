@@ -7,6 +7,8 @@
     use App\Models\CFP;
     use Carbon\Carbon;
 
+    //xdebug_break();
+
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :
         '2023-01-01';
@@ -22,16 +24,16 @@
         $branch_id = $branch->id;
     }
 
-    if (auth()->user()->role_id == CFP) {
+    if ( auth()->user()->role_id == CFP || auth()->user()->role_id == ISADMIN ) {
         $cfp = CFP::where('user_id',auth()->id())->first();
-        $results = \App\Models\CamelotCandidate::where('lead_source','like', "%{$cfp->name}%")->whereBetween('created_at',[$startDate,$endDate])->pluck('id');
+        $results = \App\Models\CamelotCandidate::where('lead_source','like', "%$cfp->name%")->whereNot('lead_source','like', "%|import_alumni|%")->whereBetween('created_at',[$startDate,$endDate])->pluck('id');
         $activated = \App\Models\CamelotCandidateProfile::whereIn('user_id',$results)->whereBetween('created_at',[$startDate,$endDate]);
     }
     else{// Altrimenti, mostra solo gi Alunni associati direttamente alla Branch corrente        $cfp = CFP::where('user_id',auth()->id())->first();
         $branch = Branch::where('user_id',auth()->id())->first();
 //         dd($branch);
         $cfp = $branch->cfp;
-        $results = \App\Models\CamelotCandidate::where('lead_source','like', "%{$cfp->name}%")->whereBetween('created_at',[$startDate,$endDate])->pluck('id');
+        $results = \App\Models\CamelotCandidate::where('lead_source','like', "%$cfp->name%")->whereNot('lead_source','like', "%|import_alumni|%")->whereBetween('created_at',[$startDate,$endDate])->pluck('id');
 //         dd($results);
         $activated = \App\Models\CamelotCandidateProfile::whereIn('user_id',$results)->whereBetween('created_at',[$startDate,$endDate]);
     }
