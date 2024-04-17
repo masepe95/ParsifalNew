@@ -10,6 +10,8 @@ class ListAlumni extends ListRecords
 {
     protected static string $resource = AlumnusResource::class;
 
+    protected ?string $maxContentWidth = 'full';
+
     protected function getHeaderActions(): array
     {
         return [
