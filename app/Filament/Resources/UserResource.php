@@ -42,7 +42,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('role_id'),
+                Tables\Columns\TextColumn::make('role.name'),
                 Tables\Columns\TextColumn::make('created_at'),
             ])
             ->filters([
