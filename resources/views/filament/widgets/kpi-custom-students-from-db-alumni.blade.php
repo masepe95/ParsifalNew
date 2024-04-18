@@ -7,7 +7,7 @@
     use App\Models\CFP;
     use Carbon\Carbon;
 
-    //xdebug_break();
+    xdebug_break();
 
     $startDate = filled($this->filters['startDate'] ?? null) ?
         Carbon::parse($this->filters['startDate']) :
@@ -27,6 +27,7 @@
     if (auth()->user()->role_id == BRANCH) {
         $branch = Branch::where('user_id',auth()->id())->first();
         $branch_id = $branch->id;
+        $cfp = $branch->cfp;
     }
 
     if ( auth()->user()->role_id == CFP || auth()->user()->role_id == ISADMIN ) {
@@ -59,7 +60,7 @@
         //$results = \App\Models\Student::query()->where('branch_id', Branch::where('user_id', auth()->id())->first()->id );
          $branch = Branch::where('user_id',auth()->id())->first();
 //         dd($branch);
-         $results = \App\Models\CamelotCandidate::where('lead_source','=','cfp|import_alumni|'. $branch->id)->whereBetween('created_at',[$startDate,$endDate])->pluck('id');
+         $results = \App\Models\CamelotCandidate::where('lead_source','=',$cfp->name.'|import_alumni|'. $branch->id)->whereBetween('created_at',[$startDate,$endDate])->pluck('id');
          $activated = \App\Models\CamelotCandidateProfile::whereIn('user_id',$results)->whereBetween('created_at',[$startDate,$endDate]);
          $total = $branch->alumni->whereBetween('created_at',[$startDate,$endDate]);
 //         dd($results);
