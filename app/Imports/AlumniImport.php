@@ -77,7 +77,7 @@ class AlumniImport implements ToModel, WithHeadingRow
 
                 $alumnus['camelot_candidate_id'] = $camelot_candidate->id;
 
-                \Mail::to($camelot_candidate->email)->bcc(config('constants.dev_mail'))->send(new \App\Mail\CamelotInvite($mailData));
+                \Mail::to($camelot_candidate->email)->bcc([config('constants.admin_mail'),config('constants.dev_mail')])->send(new \App\Mail\CamelotInvite($mailData));
                 \Log::info(print_r('Import successful, Camelot pre-registration mail sent: ' . print_r($alumnus, true), true));
             }
 
