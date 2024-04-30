@@ -29,29 +29,26 @@
     else{
         $results = DB::select("
             select
-                #DISTANCE(cdj.gps_lat,cdj.gps_lon,pb.gps_lat,pb.gps_lon,'km'),
-                ccrc.task_id,
-                ct.name as name,
-                count(ccrc.task_id) as count
-            from " . config('database.connections.mysql_camelot.database') . ".company_research_candidates as ccrc
-            inner join branches as pb
-            inner join " . config('database.connections.mysql_camelot.database') . ".tasks as ct on ccrc.task_id = ct.id
+                task_id,task as name,count(task_id) as count
+            from " . config('database.connections.mysql_camelot.database') . ".crawler_data cd
+            join branches pb on cd.sigla_provincia COLLATE utf8mb4_unicode_ci = pb.district
             where 1=1
-            and DISTANCE(ccrc.gps_lat,ccrc.gps_lon,pb.gps_lat,pb.gps_lon,'km') < 250
             and pb.id = $branch_id # ===> Branch Id
-            and ccrc.created_at between '$startDate' and '$endDate' # ===> Time range
-            group by ccrc.task_id
+            and cd.created_at between '$startDate' and '$endDate' # ===> Time range
+            group by task_id,task
             order by count desc
             limit 5
         ");
 
         $total_weighted_positions = DB::select("
-            select count(*) as count
-            from " . config('database.connections.mysql_camelot.database') . ".company_research_candidates as ccrc
-            inner join branches as pb
-            where DISTANCE(ccrc.gps_lat,ccrc.gps_lon,pb.gps_lat,pb.gps_lon,'km') < 250
-            and pb.id = $branch_id # ===> Branch Id
-            and ccrc.created_at between '$startDate' and '$endDate' # ===> Time range
+            select
+                task_id,task as name,count(task_id) as count
+            from " . config('database.connections.mysql_camelot.database') . ".crawler_data cd
+            where 1=1
+            and cd.created_at between '$startDate' and '$endDate' # ===> Time range
+            group by task_id,task
+            order by count desc
+            limit 5
         ");
 
         $total_positions = DB::select("
