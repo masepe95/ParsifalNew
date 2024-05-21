@@ -41,6 +41,6 @@ class Course extends Model
     // Temporary One-To-One relationship
     public function task()
     {
-        return $this->hasOne(Task::class);
+        return $this->hasOne(Task::class, 'id', 'task_id');
     }
 }

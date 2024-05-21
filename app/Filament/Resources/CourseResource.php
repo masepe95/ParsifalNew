@@ -100,7 +100,7 @@ class CourseResource extends Resource
                     //->extraImgAttributes('')
                     //->height('5')
                 ,
-                Tables\Columns\TextColumn::make('task_id')->label('Task')->sortable()->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('task.name')->label('Task')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('courseType.name')->label('Modalità')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('available_from')->label('Disponibile dal'),
                 Tables\Columns\TextColumn::make('available_until')->label('Disponibile al'),
